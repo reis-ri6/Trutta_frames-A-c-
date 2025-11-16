@@ -1,0 +1,706 @@
+openapi: 3.1.0
+info:
+  title: Product Registry API
+  version: 0.1.0
+  description: |
+    Product Registry service for managing ProductDef ingestion, product versions,
+    overlays and context resolution. Matches PD-003 Registry and Versioning Spec.
+
+servers:
+  - url: https://api.example.com
+    description: Production
+  - url: https://staging-api.example.com
+    description: Staging
+
+paths:
+  /v1/product-defs:
+    post:
+      operationId: registerProductDef
+      summary: Ingest or update a ProductDef document
+      description: |
+        Ingests a ProductDef (PDSL) document, validates it and writes/updates the
+        normalized domain model (product.*). Idempotent on (product_id, version, env).
+      tags: [Registry Write]
+      parameters:
+        - $ref: '#/components/parameters/XEnv'
+        - in: query
+          name: dry_run
+          required: false
+          schema:
+            type: boolean
+            default: false
+          description: If true, run full validation but do not persist changes.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductDef'
+          application/x-yaml:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: Ingestion succeeded (or simulated for dry_run)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDefIngestionResult'
+        '400':
+          description: Schema or domain validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistryError'
+        '409':
+          description: Version conflict or governance policy violation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistryError'
+
+  /v1/products/{productId}:
+    get:
+      operationId: getProductById
+      summary: Get product by id
+      tags: [Registry Read]
+      parameters:
+        - $ref: '#/components/parameters/XEnv'
+        - $ref: '#/components/parameters/ProductId'
+      responses:
+        '200':
+          description: Product found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistryError'
+
+  /v1/products/by-code/{code}:
+    get:
+      operationId: getProductByCode
+      summary: Get product by code
+      tags: [Registry Read]
+      parameters:
+        - $ref: '#/components/parameters/XEnv'
+        - in: path
+          name: code
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Product found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistryError'
+
+  /v1/product-versions/{productVersionId}:
+    get:
+      operationId: getProductVersionById
+      summary: Get product version by id
+      tags: [Registry Read]
+      parameters:
+        - $ref: '#/components/parameters/XEnv'
+        - in: path
+          name: productVersionId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Product version found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductVersion'
+        '404':
+          description: Product version not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistryError'
+
+  /v1/products/{productId}/versions/{version}:
+    get:
+      operationId: getProductVersionByProductAndVersion
+      summary: Get product version by product and version
+      tags: [Registry Read]
+      parameters:
+        - $ref: '#/components/parameters/XEnv'
+        - $ref: '#/components/parameters/ProductId'
+        - in: path
+          name: version
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Product version found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductVersion'
+        '404':
+          description: Product version not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistryError'
+
+  /v1/products/{productId}/versions/{version}/status:
+    post:
+      operationId: setProductVersionStatus
+      summary: Change status of a product version
+      description: Change lifecycle status (draft/review/active/deprecated/retired) with governance validation.
+      tags: [Registry Write]
+      parameters:
+        - $ref: '#/components/parameters/XEnv'
+        - $ref: '#/components/parameters/ProductId'
+        - in: path
+          name: version
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetStatusRequest'
+      responses:
+        '200':
+          description: Status changed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductVersion'
+        '400':
+          description: Invalid status transition
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistryError'
+        '409':
+          description: Governance/policy violation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistryError'
+
+  /v1/products/{productId}/versions:
+    get:
+      operationId: listProductVersions
+      summary: List product versions
+      tags: [Registry Read]
+      parameters:
+        - $ref: '#/components/parameters/XEnv'
+        - $ref: '#/components/parameters/ProductId'
+        - in: query
+          name: status
+          required: false
+          schema:
+            type: string
+            enum: [draft, review, active, deprecated, retired]
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 200
+            default: 50
+        - in: query
+          name: cursor
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of product versions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductVersionList'
+
+  /v1/products/search:
+    get:
+      operationId: searchProducts
+      summary: Search products by filters
+      tags: [Registry Read]
+      parameters:
+        - $ref: '#/components/parameters/XEnv'
+        - in: query
+          name: q
+          required: false
+          schema:
+            type: string
+          description: Free-text search by code, title, tags, etc.
+        - in: query
+          name: category_id
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: tag
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: market_code
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: segment_code
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: status
+          required: false
+          schema:
+            type: string
+            enum: [draft, review, active, deprecated, retired]
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 200
+            default: 50
+        - in: query
+          name: cursor
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Search result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductSearchResult'
+
+  /v1/products/{productId}/active-version:
+    get:
+      operationId: getActiveProductVersion
+      summary: Get effective active product version for context
+      tags: [Registry Read]
+      parameters:
+        - $ref: '#/components/parameters/XEnv'
+        - $ref: '#/components/parameters/ProductId'
+        - $ref: '#/components/parameters/OperatorCode'
+        - $ref: '#/components/parameters/MarketCode'
+        - $ref: '#/components/parameters/CityCode'
+      responses:
+        '200':
+          description: Active product version for given context
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductVersionResolved'
+        '404':
+          description: No active version for context
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistryError'
+
+  /v1/products/{productId}/resolve:
+    get:
+      operationId: resolveProductForContext
+      summary: Resolve base + overlays for product and context
+      tags: [Registry Read]
+      parameters:
+        - $ref: '#/components/parameters/XEnv'
+        - $ref: '#/components/parameters/ProductId'
+        - $ref: '#/components/parameters/OperatorCode'
+        - $ref: '#/components/parameters/MarketCode'
+        - $ref: '#/components/parameters/CityCode'
+        - in: query
+          name: product_version_id
+          required: false
+          schema:
+            type: string
+          description: Optional explicit product_version_id; if absent, use active.
+      responses:
+        '200':
+          description: Resolved view of product for context
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductContextResolution'
+        '404':
+          description: Product or version not found for context
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistryError'
+
+  /v1/products/{productId}/overlays:
+    post:
+      operationId: createOverlay
+      summary: Create overlay for product version
+      tags: [Registry Write]
+      parameters:
+        - $ref: '#/components/parameters/XEnv'
+        - $ref: '#/components/parameters/ProductId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOverlayRequest'
+      responses:
+        '201':
+          description: Overlay created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductOverlay'
+        '400':
+          description: Invalid overlay payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistryError'
+        '409':
+          description: Conflicting overlay for same context
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistryError'
+
+  /v1/overlays/{overlayId}:
+    patch:
+      operationId: updateOverlay
+      summary: Update overlay (status or patch payload)
+      tags: [Registry Write]
+      parameters:
+        - $ref: '#/components/parameters/XEnv'
+        - in: path
+          name: overlayId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOverlayRequest'
+      responses:
+        '200':
+          description: Overlay updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductOverlay'
+        '400':
+          description: Invalid update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistryError'
+        '404':
+          description: Overlay not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegistryError'
+
+components:
+  parameters:
+    XEnv:
+      in: header
+      name: X-Env
+      required: true
+      description: Logical environment
+      schema:
+        type: string
+        enum: [dev, stage, prod]
+    ProductId:
+      in: path
+      name: productId
+      required: true
+      schema:
+        type: string
+    OperatorCode:
+      in: query
+      name: operator_code
+      required: false
+      schema:
+        type: string
+    MarketCode:
+      in: query
+      name: market_code
+      required: false
+      schema:
+        type: string
+    CityCode:
+      in: query
+      name: city_code
+      required: false
+      schema:
+        type: string
+
+  schemas:
+    RegistryError:
+      type: object
+      properties:
+        error_code:
+          type: string
+          description: Machine-readable error code
+        message:
+          type: string
+        details:
+          type: object
+          additionalProperties: true
+      required: [error_code, message]
+
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+        code:
+          type: string
+        slug_base:
+          type: string
+        product_type:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        created_by:
+          type: string
+      required: [id, code, slug_base, product_type]
+
+    ProductVersion:
+      type: object
+      properties:
+        id:
+          type: string
+        product_id:
+          type: string
+        version:
+          type: string
+        status:
+          type: string
+          enum: [draft, review, active, deprecated, retired]
+        title_default:
+          type: string
+        category_id:
+          type: string
+          nullable: true
+        product_type:
+          type: string
+        valid_from:
+          type: string
+          format: date-time
+          nullable: true
+        valid_until:
+          type: string
+          format: date-time
+          nullable: true
+        dsl_document_ref:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        created_by:
+          type: string
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - product_id
+        - version
+        - status
+        - title_default
+        - product_type
+        - dsl_document_ref
+
+    ProductOverlay:
+      type: object
+      properties:
+        id:
+          type: string
+        base_product_version_id:
+          type: string
+        overlay_kind:
+          type: string
+          enum: [operator, market, city, vendor]
+        operator_code:
+          type: string
+          nullable: true
+        market_code:
+          type: string
+          nullable: true
+        city_code:
+          type: string
+          nullable: true
+        patch_payload:
+          type: object
+          additionalProperties: true
+        status:
+          type: string
+          enum: [active, disabled]
+        created_at:
+          type: string
+          format: date-time
+        created_by:
+          type: string
+      required:
+        - id
+        - base_product_version_id
+        - overlay_kind
+        - patch_payload
+        - status
+
+    ProductVersionList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductVersion'
+        next_cursor:
+          type: string
+          nullable: true
+
+    ProductSearchResult:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductVersion'
+        next_cursor:
+          type: string
+          nullable: true
+
+    ProductVersionResolved:
+      type: object
+      description: Effective active product version for given context (no overlay expansion).
+      properties:
+        product:
+          $ref: '#/components/schemas/Product'
+        version:
+          $ref: '#/components/schemas/ProductVersion'
+      required: [product, version]
+
+    ProductContextResolution:
+      type: object
+      description: Base + overlays + resolved config for a given context.
+      properties:
+        base_version:
+          $ref: '#/components/schemas/ProductVersion'
+        overlays:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductOverlay'
+        resolved:
+          type: object
+          additionalProperties: true
+      required: [base_version, overlays, resolved]
+
+    SetStatusRequest:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [draft, review, active, deprecated, retired]
+        reason:
+          type: string
+        metadata:
+          type: object
+          additionalProperties: true
+      required: [status]
+
+    CreateOverlayRequest:
+      type: object
+      properties:
+        base_product_version_id:
+          type: string
+        overlay_kind:
+          type: string
+          enum: [operator, market, city, vendor]
+        operator_code:
+          type: string
+          nullable: true
+        market_code:
+          type: string
+          nullable: true
+        city_code:
+          type: string
+          nullable: true
+        patch_payload:
+          type: object
+          additionalProperties: true
+      required:
+        - base_product_version_id
+        - overlay_kind
+        - patch_payload
+
+    UpdateOverlayRequest:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [active, disabled]
+        patch_payload:
+          type: object
+          additionalProperties: true
+      additionalProperties: false
+
+    ProductDef:
+      type: object
+      description: |
+        Opaque ProductDef payload (PDSL). Shape defined in PD-001; Registry treats
+        it as a validated document before normalization.
+      additionalProperties: true
+
+    ProductDefIngestionResult:
+      type: object
+      properties:
+        product_id:
+          type: string
+        product_version_id:
+          type: string
+        env:
+          type: string
+          enum: [dev, stage, prod]
+        dry_run:
+          type: boolean
+        ingestion_run_id:
+          type: string
+        status:
+          type: string
+          enum: [succeeded, failed]
+        error:
+          allOf:
+            - $ref: '#/components/schemas/RegistryError'
+          nullable: true
+      required:
+        - product_id
+        - product_version_id
+        - env
+        - dry_run
+        - ingestion_run_id
+        - status
