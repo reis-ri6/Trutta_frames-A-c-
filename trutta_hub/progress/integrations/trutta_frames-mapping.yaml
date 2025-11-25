@@ -1,0 +1,35 @@
+version: 1
+source_repo: "reis-ri6/Trutta_frames-A-c-"
+target_repo: "trutta_hub"   # logical name / target structure
+
+# Mapping between existing files in Trutta_frames-A-c-
+# and canonical artefacts/paths in the new Trutta Hub structure.
+
+mappings:
+  - source_path: "docs/pd/PD-001-product-dsl-blueprint.md"
+    target_id: "PD-001"
+    target_type: "pd"
+    target_path: "docs/pd/PD-001-product-dsl-blueprint.md"
+    status: "to_import"      # to_import | imported | skipped
+    notes: "Core product DSL doc"
+
+  - source_path: "docs/vg/VG-500-vendor-onboarding.md"
+    target_id: "VG-500"
+    target_type: "vg"
+    target_path: "docs/vg/VG-500-vendor-onboarding.md"
+    status: "to_import"
+    notes: "Vendor onboarding guide"
+
+  - source_path: "concepts/tjm/00-overview.md"
+    target_id: "CONCEPT-TJM"
+    target_type: "concept"
+    target_path: "concepts/tjm-travel-journey-map/00-overview.md"
+    status: "to_import"
+    notes: "TJM overview"
+
+  - source_path: "concepts/abc/00-overview.md"
+    target_id: "CONCEPT-ABC"
+    target_type: "concept"
+    target_path: "concepts/abc-anonymous-buyers-community/00-overview.md"
+    status: "to_import"
+    notes: "ABC overview"
