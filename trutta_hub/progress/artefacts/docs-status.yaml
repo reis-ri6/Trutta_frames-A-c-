@@ -6,10 +6,10 @@ updated_at: "2025-11-25T00:00:00Z"
 # docs-status.yaml         = "в якому стані цей артефакт і що з ним робити"
 
 summary:
-  total: 4
+  total: 5
   by_status:
     missing: 0        # немає файла, тільки запис в індексі
-    draft: 4
+    draft: 5
     in_review: 0
     canonical: 0
     deprecated: 0
@@ -25,6 +25,16 @@ items:
     last_agent_update: null   # ISO datetime або null, якщо ще не чіпали агенти
     last_agent_id: null       # імʼя агента, який останнім оновлював статус
     notes: "Initial seed, requires full rewrite from legacy sources."
+
+  # === PD-003 ===
+  - id: "PD-003"
+    path: "docs/pd/PD-003-dsl-file-types-and-schemas.md"
+    type: "pd"
+    status: "draft"
+    readiness_score: 0.3
+    last_agent_update: null
+    last_agent_id: null
+    notes: "Defines DSL artefact types, schemas, and directory conventions; requires schema files and runtime mapping."
 
   # === VG-500 ===
   - id: "VG-500"

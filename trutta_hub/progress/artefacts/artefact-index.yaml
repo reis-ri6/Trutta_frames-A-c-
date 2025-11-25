@@ -24,6 +24,23 @@ artefacts:
     supersedes: []            # які id цей артефакт замінює/знімає з канону
     notes: "Initial seed of PD-001 from legacy docs."
 
+  - id: "PD-003"
+    type: "pd"
+    path: "docs/pd/PD-003-dsl-file-types-and-schemas.md"
+    title: "Trutta DSL File Types & Schemas"
+    scope: "trutta-core"
+    domains: ["tourism", "hospitality", "services", "food", "health"]
+    concepts: ["tjm", "abc", "trutta-tokenization"]
+    status: "draft"
+    owner: "arch"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "manual"
+    tags: ["spec", "dsl", "schema-contract"]
+    depends_on: ["PD-001", "PD-002"]
+    supersedes: []
+    notes: "Defines DSL artefact types, directory conventions, and minimal fields."
+
   - id: "VG-500"
     type: "vg"
     path: "docs/vg/VG-500-vendor-onboarding.md"
