@@ -1,0 +1,6 @@
+apiVersion: trutta.agents/v1
+kind: System
+name: tourism-daily-refresh
+stages: []
+domains: []
+schedule: "manual"
