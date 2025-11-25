@@ -1,90 +1,204 @@
 # Ingestion Rules
 
-These rules are used by `repo-ingestion-agent` to classify and score files.
+Цей документ описує, як `repo-ingestion-agent` класифікує файли, рахує скоринги й виставляє `decision` для запису в `ingestion/ingestion-index.yaml`.
 
-## 1. Classification
+---
 
-For each file in the repository:
+## 1. Класифікація: `kind`
 
-1. Detect `kind` (by path, extension, and basic content):
-   - `doc`    — markdown, txt, doc-like textual content.
-   - `code`   — .ts, .js, .py, .sql, .sh, .tf, .yaml, etc.
-   - `data`   — .json, .csv and other structured data.
-   - `media`  — images, pdf, binary assets.
-   - `other`  — everything else.
+Визначити `kind` для кожного файла:
 
-2. Detect `subtype`:
+- `doc`
+  - розширення: `.md`, `.txt`, `.rst`, `.adoc`, `.docx` (якщо текстовий вміст).
+- `code`
+  - `.ts`, `.tsx`, `.js`, `.jsx`, `.py`, `.sql`, `.sh`, `.go`, `.rb`, `.php`, `.tf`, `.yaml`, `.yml`, `.json` (якщо це код/конфіг).
+- `data`
+  - `.json`, `.csv`, `.parquet`, `.ndjson` (якщо це дані/снепшоти, а не конфіг коду).
+- `media`
+  - `.png`, `.jpg`, `.jpeg`, `.gif`, `.svg`, `.pdf`, інші бінарні.
+- `other`
+  - усе інше, що не підпадає під наведене.
 
-- For `doc`:
-  - `marketing` — pitches, promo, vision-heavy text.
-  - `spec`      — clear technical or product specs.
-  - `note`      — internal notes, scratchpad.
-  - `legal`     — terms, policies, agreements.
-  - `log`       — logs, changelog-like.
-  - `other`     — anything that doesn't fit above.
+Якщо файл технічний шум (`.DS_Store`, кеш, build-артефакти) — одразу `kind=other` і `decision=ignore`.
 
-- For `code`:
-  - `snippet`   — short, non-standalone examples.
-  - `script`    — runnable CLIs / utilities.
-  - `template`  — skeletons intended for reuse.
-  - `infra`     — Docker/Terraform/k8s/Supabase config.
-  - `test`      — tests/specs (unit/integration).
-  - `other`.
+---
 
-- For `data`:
-  - `schema_sample`   — samples showing structure.
-  - `dataset_sample`  — small example datasets.
-  - `log_export`      — raw export logs.
-  - `other`.
+## 2. Класифікація: `subtype`
 
-## 2. Scoring
+### 2.1. Для `kind = doc`
 
-All scores are floats in [0, 1].
+Використовувати путь, імʼя й контент.
 
-### 2.1. `relevance_score`
+- `marketing`
+  - слова: `pitch`, `vision`, `story`, `landing`, `promo`, `benefits`, `USP`;
+  - тон: багато емоційних формулювань, мало формальних структур.
+- `spec`
+  - структура: секції типу `Overview`, `Scope`, `API`, `Data model`, `Use cases`;
+  - є явні вимоги / контракти.
+- `note`
+  - чернетки, TODO, мозкові штурми, неструктурований текст.
+- `legal`
+  - ToS, Privacy Policy, AML/KYC, ліцензії, контракти.
+- `log`
+  - changelog, meeting notes із датами, історія змін.
+- `other`
+  - все, що не вписується в попереднє.
 
-How much this file belongs to the Trutta/TJM/ABC/data stack.
+### 2.2. Для `kind = code`
 
-Signals:
-- **Path / filename** contains domain terms:
-  - `trutta`, `tjm`, `abc`, `sospeso`, `bread`, `token`, `voucher`,
-    `journey`, `vendor`, `supabase`, `reis`, `ri6`, `city`, `guide`.
-- **Content** mentions:
-  - tokenization of services/meals, travel journey, anonymous buyers, industrial domains (tourism / hospitality / services / food / health).
-- Clearly unrelated / misc → low relevance.
+- `snippet`
+  - короткий, неповний приклад (нема entrypoint, багато `...`/коментарів).
+- `script`
+  - самодостатній файл, який можна запускати (CLI, job, migration).
+- `template`
+  - є параметризовані назви, плейсхолдери, коментарі «fill here», «TODO: project-specific».
+- `infra`
+  - Docker, k8s, Terraform, CI, Supabase/DB конфіги.
+- `test`
+  - файли в `tests/`, `__tests__/` або з назвою `*.test.*`, `*.spec.*`.
+- `other`
+  - усе, що не класифікується вище.
 
-### 2.2. `novelty_score`
+### 2.3. Для `kind = data`
 
-How different this file is from what we already have.
+- `schema_sample`
+  - невеликий приклад зі структурою даних.
+- `dataset_sample`
+  - семпл датасету, який описує реальну/синтетичну вибірку.
+- `log_export`
+  - експорт логів, евентів тощо.
+- `other`.
 
-Signals:
-- Similarity (hash / semantic) to existing files:
-  - almost identical → low novelty;
-  - new flows, new APIs, new domain insights → higher novelty.
-- For code: AST-level similarity (same structure = low novelty).
+---
 
-### 2.3. `actuality_score`
+## 3. Скоринги: `relevance_score`, `novelty_score`, `actuality_score`
 
-How up-to-date the content and stack are.
+Усі значення в діапазоні `0.0–1.0`.
 
-Signals:
-- File timestamps (rough heuristic).
-- Mentioned stack:
-  - current versions, non-deprecated APIs → higher.
-  - clearly legacy libraries / old product naming → lower.
-- For domain docs: references to current product names and structure.
+### 3.1. `relevance_score`
 
-## 3. Decisions
+Оцінює, наскільки файл належить до екосистеми Trutta/TJM/ABC/доменів.
 
-Based on `kind`, `subtype` and scores, choose:
+**Підвищують оцінку:**
 
-- `ignore`
-  - technical noise: cache, compiled, local artifacts.
-- `archive`
-  - legacy / historical content worth keeping but not promoting.
-- `compress_clean`
-  - marketing / noisy docs where we can extract structured facts.
-- `promote_candidate`
-  - high-value spec/code/concept that should be considered for canonicalisation.
+- Path містить ключові слова:
+  - `trutta`, `tjm`, `abc`, `sospeso`, `bread`, `vienna`, `token`, `voucher`,
+    `journey`, `vendor`, `reis`, `ri6`, `city`, `guide`.
+- Контент містить:
+  - опис токенізації сервісів/страв,
+  - travel journey / TJM,
+  - ABC (анонімні покупці, комʼюніті),
+  - індустріальні домени (туризм, готелі, кафе, лікарні, страви, рецепти, FDA тощо),
+  - посилання на PD/VG/CONCEPT/DOMAIN з `artefact-index.yaml`.
 
-The agent must be conservative: when in doubt, prefer `archive` over `promote_candidate`.
+**Знижують оцінку:**
+
+- generic-туторіали без згадки Trutta/TJM/ABC/доменів;
+- чисто технічні приклади, не привʼязані до продукту.
+
+### 3.2. `novelty_score`
+
+Оцінює, наскільки файл відрізняється від уже наявних.
+
+- Дуже схожий на існуючий (майже клон тексту/коду) → `0.0–0.2`.
+- Розширює існуючу тему новими кейсами/модулями → `0.5+`.
+- Абсолютно новий напрям / домен → `0.7+`.
+
+Агент має використовувати семантичну схожість (якщо доступна) + прості евристики (однакова структура/назва → низька новизна).
+
+### 3.3. `actuality_score`
+
+Оцінює, наскільки зміст і стек актуальні:
+
+- Новий/поточний стек (актуальні версії бібліотек, сучасна термінологія продукту) → високо.
+- Legacy-API, старі назви продуктів, deprecated-патерни → низько.
+
+Додаткові сигнали:
+- час змін файла (якщо доступний);
+- посилання на нові/старі PD/VG.
+
+---
+
+## 4. `decision`
+
+На основі `kind`, `subtype` і скорингів виставляється `decision`:
+
+### 4.1. `ignore`
+
+Файл не цікавий для документації/код-бази, не має потрапляти в пайплайни:
+
+- кеші, тимчасові файли, build-артефакти;
+- великі бінарні файли без структурного значення.
+
+### 4.2. `archive`
+
+Файл лишається як історичний/сервісний, але не тягнемо його в канон:
+
+- legacy-нотатки;
+- застарілі спеки;
+- старі pitch-decks, що втратили актуальність;
+- код, який очевидно не використовується і має низький `actuality_score`.
+
+### 4.3. `compress_clean`
+
+Використовується тільки для:
+
+- `kind = doc`, `subtype = marketing`,
+- або документів із великою кількістю «води», але з корисними фактами.
+
+Мета:
+- створити структурований `.clean.md` + `.summary.md`;
+- потім уже canonical-агенти можуть брати `.clean.md` як сировину.
+
+### 4.4. `promote_candidate`
+
+Сильні кандидати в canonical-артефакти:
+
+- `spec` для ключових модулів,
+- концепти, що узгоджуються з нинішньою моделлю,
+- корисні, актуальні темплейти коду / конфігів.
+
+Умови (рекомендації):
+
+- `relevance_score >= 0.6`
+- `actuality_score >= 0.6`
+- `novelty_score >= 0.3`
+
+Якщо файл — чиста копія вже канонізованого артефакту → не `promote_candidate`, а `archive`.
+
+---
+
+## 5. `linked_artefact_id`
+
+При наявності запису в `progress/artefacts/artefact-index.yaml` агент може заповнити `linked_artefact_id`.
+
+Правила:
+
+- Якщо шлях співпадає з canonical-шляхом з індексу — ставити відповідний `id`.
+- Якщо файл явно готується під конкретний артефакт (назва/шлях/теги), можна звʼязати його з:
+  - `PD-***`,
+  - `VG-***`,
+  - `CONCEPT-*`,
+  - `DOMAIN-*`,
+  - `TEMPLATE-*`.
+
+Якщо немає впевненості — `linked_artefact_id = null`.
+
+---
+
+## 6. Консервативна поведінка
+
+Якщо агент **не впевнений** у:
+
+- `subtype`,
+- значеннях скорингів,
+- рішенні між `archive` і `promote_candidate`,
+
+він має:
+
+- виставити безпечніше значення:
+  - `subtype = other`,
+  - `decision = archive`;
+- не заповнювати `linked_artefact_id`.
+
+Уточнення й підняття в канон — завдання `doc-canonisation-agent` + людей.
