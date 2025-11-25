@@ -1,0 +1,37 @@
+apiVersion: trutta.agents/v1
+kind: Agent
+name: recon-agent
+role: "Repository reconnaissance for agent readiness and guardrails"
+
+inputs:
+  - path: "./"                      # read whole repo (excluding binaries)
+
+outputs:
+  - path: "progress/agents/recon-report.md"
+  - path: "ingestion/logs/"         # optional validation logs
+
+capabilities:
+  - file_read
+  - summarisation
+  - semantic_classification
+  - diff_generation
+
+guardrails:
+  - do_not_edit:
+      - "docs/"
+      - "concepts/"
+      - "domains/"
+      - "schemas/"
+      - "templates/"
+      - "progress/artefacts/"
+      - "infra/"
+      - "monitoring/"
+      - "tools/"
+  - allowed_write:
+      - "progress/agents/recon-report.md"
+      - "ingestion/logs/"
+
+config:
+  report_path: "progress/agents/recon-report.md"
+  log_prefix: "ingestion/logs/recon-"
+  guardrails_ref: "ai-guardrails.md"
