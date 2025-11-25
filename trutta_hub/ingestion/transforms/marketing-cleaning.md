@@ -1,52 +1,144 @@
 # Transform: Marketing Cleaning
 
-Goal: turn noisy marketing copy into a compact, structured spec input.
+Ця трансформація описує, як із маркетингових / «водяних» текстів робити
+структурований вхід для продуктових/архітектурних документів.
 
-## Input
+Використовується `repo-ingestion-agent` для файлів із:
+- `kind = doc`
+- `subtype = marketing`
+- `decision = compress_clean`
 
-- A file with:
-  - `kind = doc`
-  - `subtype = marketing`
-  - `decision = compress_clean`
+---
 
-## Output
+## 1. Вхід
 
-For each input file `<path>`:
+**Input file**:
 
-- `<path>.clean.md`
-  - structured, cleaned version of the content.
-- `<path>.summary.md`
-  - 10–20 lines summary with core ideas.
+- шлях: `<path>.md` / `<path>.txt` (будь-який `doc/marketing`);
+- може містити:
+  - пітчі, історії, слогани;
+  - бачення продукту;
+  - «революційні» обіцянки;
+  - розріджену фактику.
 
-## Steps
+Агент сприймає все як текст, без структури, крім базових заголовків/списків.
 
-1. **Extract facts**
-   - Product / service being described.
-   - Target users / roles.
-   - Key user flows (journeys).
-   - Key constraints (technical, legal, behavioural).
-   - Any explicit metrics, SLA, economics.
+---
 
-2. **Remove noise**
-   - Buzzwords and emotional language (revolutionary, seamless, magic…).
-   - Repetitions.
-   - Vague claims without concrete consequences.
+## 2. Вихід
 
-3. **Restructure**
-   - Use clear sections:
-     - `Overview`
-     - `Target users`
-     - `Key flows`
-     - `Constraints`
-     - `Open questions`
-   - Use bullet lists where possible.
-   - Preserve all factual information, do not invent new facts.
+Для кожного вхідного файла `<path>` агент створює:
 
-4. **Summary**
-   - Create `<path>.summary.md`:
-     - 10–20 lines.
-     - Focus on what this actually changes in the system / product.
+1. **Очищена версія**  
+   `"<path>.clean.md"`
 
-5. **Index update (done by agent)**
-   - In `ingestion/ingestion-index.yaml`:
-     - for the original file, add `clean_output_paths` with both new paths.
+   - чистий Markdown;
+   - сфокусований на фактах і структурі.
+
+2. **Стислий конспект**  
+   `"<path>.summary.md"`
+
+   - 10–20 рядків;
+   - без ліріки, тільки «що це за продукт / зміна / флоу і для кого».
+
+Шляхи до обох файлів агент записує в `clean_output_paths` у `ingestion/ingestion-index.yaml`.
+
+---
+
+## 3. Структура `<path>.clean.md`
+
+Рекомедована структура:
+
+```md
+# <Продукт / ініціатива>
+
+## Overview
+- Коротко: що це таке, одна–дві фрази.
+- Який модуль/продукт/частина Trutta/TJM/ABC.
+
+## Target Users
+- Хто користувачі / ролі.
+- Які в них потреби, які проблеми вирішуємо.
+
+## Key Flows
+- Основні сценарії використання (по пунктах):
+  - Flow 1: ...
+  - Flow 2: ...
+
+## Value / Impact
+- Які результати/ефекти очікуються:
+  - для користувача;
+  - для системи/бізнесу.
+
+## Constraints
+- Технічні обмеження.
+- Регуляторні/legal.
+- Обмеження по даних (health/FDA, анонімність тощо).
+
+## Open Questions
+- Які речі залишаються не визначеними.
+- Що потребує уточнення у PD/VG/Domain.
+```
+
+Правила:
+
+* жодних емоційних епітетів («revolutionary», «amazing» тощо);
+* не вигадувати фактів, працювати тільки з тим, що є у вихідному тексті;
+* сформульовані пункти мають бути максимально нейтральними й технічними.
+
+---
+
+## 4. Структура `<path>.summary.md`
+
+Формат:
+
+* plain Markdown;
+* 10–20 рядків, без секцій, кожен рядок — окремий факт / теза.
+
+Приклад патерну:
+
+```md
+- Product: <назва>, модуль екосистеми Trutta.
+- Target users: ...
+- Main problem: ...
+- Key flows: ...
+- Dependencies: ...
+- Risks/constraints: ...
+- Next steps: ...
+```
+
+Мета — дати людям/агентам «TL;DR», який можна швидко прочитати або вбудувати в інші документи.
+
+---
+
+## 5. Поведінка агента
+
+1. Прочитати оригінальний текст.
+2. Витягнути:
+
+   * опис продукту / сервісу;
+   * цільову аудиторію;
+   * ключові флоу;
+   * обмеження, ризики;
+   * згадування доменів (tourism/hospitality/services/food/health);
+   * звʼязок із Trutta/TJM/ABC/іншими концептами.
+3. Побудувати `*.clean.md` за структурою з розділу 3.
+4. Побудувати `*.summary.md` за структурою з розділу 4.
+5. Оновити `ingestion-index.yaml`:
+
+   * для відповідного `path`:
+
+     * додати/оновити `clean_output_paths` з двома шляхами;
+     * оновити `last_ingestion_run`.
+
+---
+
+## 6. Обмеження
+
+* Не змінювати або видаляти оригінальний файл.
+* Не намагатися робити canonical-PD/VG:
+
+  * `.clean.md` — це лише підготовлений матеріал для `doc-canonisation-agent` та людей.
+* Не включати сюди PII або конкретні медичні поради:
+
+  * описуємо тільки загальні патерни, моделі, обмеження.
