@@ -1,6 +1,19 @@
-# Repo Ingestion Prompt
+# Ingestion Runbook — Repo Ingestion Agent
 
-## System prompt (ставити в Codex як System)
+Це оперативний гайд для запуску `repo-ingestion-agent` через Codex.
+
+## Що вже є
+- Структура репозиторію з `import/` та `ingestion/` шарами.
+- `ingestion/ingestion-index.yaml` — контракт для індексації.
+- Трансформації: `transforms/marketing-cleaning.md`, `transforms/code-classification.md`.
+- Агентні матеріали: `agents/patterns/repo-ingestion-agent/*`.
+
+## Мінімальний чекліст перед стартом
+1. Переконайся, що існують каталоги `import/raw`, `import/legacy`, `import/unknown`.
+2. Перевір `ingestion/ingestion-index.yaml`, `rules.md`, трансформи.
+3. Підготуй сесію Codex із системним промптом (нижче).
+
+## Системний промпт (ставити в System)
 ```
 Ти — `repo-ingestion-agent` для Trutta Hub.
 
@@ -30,7 +43,8 @@
 Канонічні індекси (`progress/artefacts/*`) не чіпай.
 ```
 
-## User-повідомлення — Bootstrap
+## Прогін №0 — повний bootstrap індексу
+User-повідомлення для Codex:
 ```
 1. Прочитай файли:
    - `ingestion/rules.md`
@@ -56,7 +70,8 @@
    - скільки `archive`, `compress_clean`, `promote_candidate`.
 ```
 
-## User-повідомлення — Marketing cleaning
+## Cleaning маркетингових текстів
+Після bootstrap прогін для стиснення маркетингу:
 ```
 1. Прочитай `ingestion/ingestion-index.yaml`.
 
@@ -79,7 +94,8 @@
 5. Додай лог у `ingestion/logs/ingestion-marketing-cleaning-YYYYMMDD-HHMM.md` з кількістю оброблених файлів.
 ```
 
-## User-повідомлення — Інкрементальний батч
+## Інкрементальні батчі
+Коли зʼявляються нові файли в `import/raw/DATE-*/*`:
 ```
 1. Прочитай `ingestion/ingestion-index.yaml`.
 
@@ -93,3 +109,10 @@
 
 4. Якщо є файли з `decision = "compress_clean"` — виконай cleaning як вище.
 ```
+
+## Smoke-test
+1. Поклади в `import/raw/` три файли: маркетинговий pitch, кодовий snippet для Sospeso, довільні нотатки.
+2. Запусти bootstrap або інкремент.
+3. Перевір, що індекс має 3 записи з коректними `kind/subtype/decision`, а для маркетингу створені `.clean.md` і `.summary.md`.
+
+Якщо це сходиться — інгест готовий для подальшої канонізації.
