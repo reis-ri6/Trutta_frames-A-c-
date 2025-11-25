@@ -6,10 +6,10 @@ updated_at: "2025-11-25T00:00:00Z"
 # docs-status.yaml         = "в якому стані цей артефакт і що з ним робити"
 
 summary:
-  total: 5
+  total: 6
   by_status:
     missing: 0        # немає файла, тільки запис в індексі
-    draft: 5
+    draft: 6
     in_review: 0
     canonical: 0
     deprecated: 0
@@ -35,6 +35,16 @@ items:
     last_agent_update: null
     last_agent_id: null
     notes: "Defines DSL artefact types, schemas, and directory conventions; requires schema files and runtime mapping."
+
+  # === PD-004 ===
+  - id: "PD-004"
+    path: "docs/pd/PD-004-industrial-data-and-knowledge-layers.md"
+    type: "pd"
+    status: "draft"
+    readiness_score: 0.25
+    last_agent_update: null
+    last_agent_id: null
+    notes: "Outlines data/knowledge layers (raw/reference/canonical/analytics/AI) and registries across industrial domains; needs mapping to concrete pipelines and schemas."
 
   # === VG-500 ===
   - id: "VG-500"
