@@ -1,4 +1,116 @@
-version: 1
-name: "Trutta Hub"
-compatibility: []
-metadata: {}
+apiVersion: trutta.hub/v1
+kind: HubManifest
+
+metadata:
+  name: "Trutta Hub"
+  repo: "reis-ri6/Trutta_frames-A-c-"
+  description: "Канонічний репозиторій документації, схем, темплейтів та агентів для екосистеми Trutta."
+  owners:
+    - role: "arch"
+      contact: "TBD"
+    - role: "ai-ops"
+      contact: "TBD"
+
+spec:
+  version: "0.1.0"
+
+  # Основні шари репозиторію
+  layers:
+    docs:
+      path: "docs/"
+      description: "Продуктова та операційна документація (PD, VG, guides, policies)."
+    concepts:
+      path: "concepts/"
+      description: "Концепти та фреймворки (TJM, ABC, Trutta tokenization тощо)."
+    domains:
+      path: "domains/"
+      description: "Індустріальні домени (tourism, hospitality, services, food, health)."
+    schemas:
+      path: "schemas/"
+      description: "Фізичні схеми даних (DB, events, vector, graph)."
+    templates:
+      path: "templates/"
+      description: "Темплейти проєктів, дизайну, архітектур."
+    agents:
+      path: "agents/"
+      description: "Опис одиночних агентів, систем та їх темплейтів."
+    ingestion:
+      path: "ingestion/"
+      description: "Індекс, правила та трансформації для repo-ingestion-agent."
+    import:
+      path: "import/"
+      description: "Сирі матеріали для інгесту (raw/legacy/unknown)."
+    progress:
+      path: "progress/"
+      description: "Статуси артефактів, roadmap, workflows, інтеграції."
+    monitoring:
+      path: "monitoring/"
+      description: "Метрики, алерти, журнали подій."
+    infra:
+      path: "infra/"
+      description: "Інфраструктурні конфіги (docker/k8s/terraform та ін.)."
+    tools:
+      path: "tools/"
+      description: "CLI та допоміжні скрипти."
+    config:
+      path: "config/"
+      description: "Схеми й policy для конфігів та середовищ."
+    samples:
+      path: "samples/"
+      description: "Приклади даних і фікстури."
+    tests:
+      path: "tests/"
+      description: "Тести й eval-и."
+
+  # Директорії для запису агентами
+  writable:
+    ingestion_agent:
+      allowed:
+        - "ingestion/ingestion-index.yaml"
+        - "ingestion/logs/"
+        - "**/*.clean.md"
+        - "**/*.summary.md"
+    doc_canonisation_agent:
+      allowed:
+        - "docs/"
+        - "concepts/"
+        - "domains/"
+        - "templates/"
+        - "progress/artefacts/artefact-index.yaml"
+        - "progress/artefacts/docs-status.yaml"
+
+  # Де шукати сирі матеріали для інгесту
+  import_paths:
+    - "import/raw/"
+    - "import/legacy/"
+    - "import/unknown/"
+
+  # Опис ключових агентів
+  agents:
+    repo_ingestion_agent:
+      path: "agents/patterns/repo-ingestion-agent/repo-ingestion.agent.yaml"
+      prompt: "agents/patterns/repo-ingestion-agent/repo-ingestion.prompt.md"
+      index_file: "ingestion/ingestion-index.yaml"
+    doc_canonisation_agent:
+      path: "agents/patterns/doc-canonisation-agent/doc-canonisation.agent.yaml"
+      prompt: "agents/patterns/doc-canonisation-agent/doc-canonisation.prompt.md"
+      artefact_index: "progress/artefacts/artefact-index.yaml"
+      docs_status: "progress/artefacts/docs-status.yaml"
+
+  # Документовані системи агентів
+  systems:
+    doc_pipeline:
+      path: "agents/systems/doc-pipeline/doc-pipeline.system.yaml"
+      description: "Двостадійний пайплайн: ingestion → canonisation."
+
+  # Політики
+  policies:
+    ai_guardrails_file: "ai-guardrails.md"
+    pii_policy_file: "docs/policies/pii-policy.md"
+    health_policy_file: "docs/policies/health-data-policy.md"
+
+  # Інтеграції з іншими репозиторіями/джерелами
+  integrations:
+    legacy_trutta_frames:
+      source_repo: "reis-ri6/Trutta_frames-A-c-"
+      mapping_file: "progress/integrations/trutta_frames-mapping.yaml"
