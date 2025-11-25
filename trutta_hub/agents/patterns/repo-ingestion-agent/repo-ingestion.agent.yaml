@@ -1,0 +1,35 @@
+apiVersion: trutta.agents/v1
+kind: Agent
+name: repo-ingestion-agent
+role: "Classify repository files, maintain ingestion-index, and generate cleaned marketing summaries."
+inputs:
+  - path: "./"
+outputs:
+  - path: "ingestion/ingestion-index.yaml"
+  - path: "ingestion/logs/"
+  - path: "**/*.clean.md"
+  - path: "**/*.summary.md"
+capabilities:
+  - file_read
+  - file_write_limited
+  - summarisation
+  - semantic_classification
+guardrails:
+  - do_not_edit:
+      - "docs/"
+      - "concepts/"
+      - "domains/"
+      - "schemas/"
+      - "templates/"
+      - "agents/"
+      - "progress/"
+      - "monitoring/"
+  - allowed_write:
+      - "ingestion/ingestion-index.yaml"
+      - "ingestion/logs/"
+      - "**/*.clean.md"
+      - "**/*.summary.md"
+config:
+  index_path: "ingestion/ingestion-index.yaml"
+  marketing_transform: "ingestion/transforms/marketing-cleaning.md"
+  code_transform: "ingestion/transforms/code-classification.md"

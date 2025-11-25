@@ -1,0 +1,9 @@
+apiVersion: trutta.agents/v1
+kind: Agent
+name: travel-companion-agent
+role: ""
+inputs: []
+outputs: []
+capabilities: []
+guardrails: []
+config: {}

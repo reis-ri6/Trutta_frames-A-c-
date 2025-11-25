@@ -1,0 +1,19 @@
+apiVersion: trutta.agents/v1
+kind: System
+name: doc-pipeline
+type: data-conveyor
+
+description: |
+  Two-stage pipeline:
+  1) repo-ingestion-agent заповнює ingestion-index.
+  2) doc-canonisation-agent піднімає найкращі файли в canonical-шар.
+
+stages:
+  - name: ingestion
+    agents:
+      - repo-ingestion-agent
+  - name: canonisation
+    agents:
+      - doc-canonisation-agent
+
+schedule: "manual"    # запуск руками або зовнішнім оркестратором
