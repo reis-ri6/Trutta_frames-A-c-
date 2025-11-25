@@ -1,0 +1,18 @@
+version: 1
+source_repo: "reis-ri6/Trutta_frames-A-c-"
+
+mappings:
+  - source_path: "docs/pd/PD-001-product-dsl-blueprint.md"
+    target_id: "PD-001"
+    target_path: "docs/pd/PD-001-product-dsl-blueprint.md"
+    status: "to_import"      # to_import | imported | skipped
+
+  - source_path: "docs/vg/VG-500-vendor-onboarding.md"
+    target_id: "VG-500"
+    target_path: "docs/vg/VG-500-vendor-onboarding.md"
+    status: "to_import"
+
+  - source_path: "concepts/tjm/00-overview.md"
+    target_id: "CONCEPT-TJM"
+    target_path: "concepts/tjm-travel-journey-map/00-overview.md"
+    status: "to_import"
