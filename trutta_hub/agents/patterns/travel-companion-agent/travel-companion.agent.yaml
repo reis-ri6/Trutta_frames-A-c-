@@ -1,0 +1,38 @@
+apiVersion: trutta.agents/v1
+kind: Agent
+name: travel-companion-agent
+role: "Travel itinerary assistant using Trutta domain artefacts"
+
+inputs:
+  - path: "domains/tourism/"
+  - path: "domains/services/"
+  - path: "domains/food/"
+  - path: "templates/projects/vienna-guide/"
+  - path: "schemas/events/journey-events/"
+
+outputs:
+  - path: "progress/agents/travel-companion/"
+
+capabilities:
+  - file_read
+  - summarisation
+  - semantic_classification
+  - planning
+
+guardrails:
+  - do_not_edit:
+      - "docs/"
+      - "concepts/"
+      - "templates/"
+      - "schemas/"
+      - "ingestion/"
+      - "progress/artefacts/"
+  - allowed_write:
+      - "progress/agents/travel-companion/"
+
+config:
+  response_format: "markdown"
+  cite_sources: true
+  safety:
+    pii_collection: false
+    medical_guidance: "forbidden"
