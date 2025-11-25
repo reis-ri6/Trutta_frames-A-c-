@@ -1,33 +1,42 @@
-# Code Classification
+# Transform: Code Classification
 
-Як класифікувати та оцінювати код.
+Goal: detect valuable code files and mark good candidates for templates/examples.
 
-## 1. Цілі
-- Визначити тип коду: інфраструктура, backend, CLI, дані тощо.
-- Оцінити, чи є це кандидат на канон (`promote_candidate`).
-- Привʼязати до артефакту (якщо можливо) через `linked_artefact_id`.
+## Input
 
-## 2. Категорії коду (`subtype`)
-- **snippet** — короткі уривки, Gist, приклади.
-- **project** — повні модулі/пакети.
-- **infra** — Terraform/K8s/Docker/CI конфіги.
-- **app** — конфіги застосунків, CLI, темплейти.
+- A file with `kind = code`.
 
-## 3. Критерії рішення
-- **promote_candidate** якщо:
-  - файл належить до темплейта (`templates/projects/**`, `templates/architecture/**`),
-  - містить суттєві схеми/DDL/SQL/JSON-Schema,
-  - додає код, який можна інтегрувати або перевикористати.
-- **archive** якщо:
-  - застарілий, дубльований або неповний фрагмент без контексту.
-- **ignore** для службових файлів, лок- та кеш-файлів.
+## Tasks
 
-## 4. Що заповнювати
-- `detected_language` — визнач за вмістом (yaml, sql, ts, js, py, md тощо).
-- `relevance_score` — 0.8–1.0 для ключових шаблонів/DDL; 0.3–0.6 для малих уривків.
-- `novelty_score` — вище, якщо додає нові таблиці/endpoint-и/алгоритми.
-- `actuality_score` — залежить від дат/версій у файлі; якщо невідомо — 0.6–0.8.
+1. Determine `subtype`:
+   - `snippet`   — short example, not standalone.
+   - `script`    — executable tool or CLI.
+   - `template`  — reusable skeleton, usually with placeholders.
+   - `infra`     — infra configuration: Docker, Terraform, k8s, Supabase, CI.
+   - `test`      — test-code.
+   - `other`.
 
-## 5. Після класифікації
-- Жодних трансформацій не потрібно; просто онови індекс.
-- Якщо файл явно відповідає темплейту, додай `linked_artefact_id` (наприклад, `TEMPLATE-SOSPESO`).
+2. Estimate scores:
+   - `relevance_score`:
+     - higher if code uses Trutta/TJM/ABC-related APIs, schemas or concepts.
+   - `novelty_score`:
+     - low if AST/structure duplicates existing examples;
+     - higher if it introduces new flows/patterns.
+   - `actuality_score`:
+     - higher for code that uses current stack and valid APIs;
+     - lower for clearly deprecated or old patterns.
+
+3. Decide what to do:
+   - `promote_candidate`:
+     - code looks like a good example or template and is up-to-date.
+   - `archive`:
+     - legacy example, outdated stack, or superseded snippet.
+   - `ignore`:
+     - compiled/build artefacts, vendor bundles, generated code.
+
+4. Do not modify the original code files.
+   - Only update `ingestion/ingestion-index.yaml` with:
+     - `subtype`
+     - scores
+     - `decision`
+     - optional `linked_artefact_id` (e.g. `TEMPLATE-SOSPESO`).

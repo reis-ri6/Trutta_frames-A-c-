@@ -1,16 +1,7 @@
 version: 1
 updated_at: "2025-11-24T00:00:00Z"
 
-files: []  # агент додає записи виду:
-# - path: "..."
-#   kind: "doc"
-#   subtype: "marketing"
-#   size_bytes: 0
-#   created_at: ""
-#   detected_language: ""
-#   relevance_score: 0.0
-#   novelty_score: 0.0
-#   actuality_score: 0.0
-#   decision: "archive"
-#   linked_artefact_id: null
-#   last_ingestion_run: ""
+# Ingestion index:
+# one entry per file seen by the ingestion agent.
+
+files: []

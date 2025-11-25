@@ -1,29 +1,52 @@
-# Marketing Cleaning
+# Transform: Marketing Cleaning
 
-Як стискати та чистити маркетингові тексти.
+Goal: turn noisy marketing copy into a compact, structured spec input.
 
-## 1. Вхід
-- Оригінальний `.md/.txt/.docx` у `import/raw/**` чи іншому каталозі.
-- Запис у `ingestion-index` з `kind=doc`, `subtype=marketing`, `decision=compress_clean`.
+## Input
 
-## 2. Вихідні файли
-- `{original}.clean.md` — структурований список фактів.
-- `{original}.summary.md` — 10–20 рядків короткого конспекту.
+- A file with:
+  - `kind = doc`
+  - `subtype = marketing`
+  - `decision = compress_clean`
 
-## 3. Правила перетворення
-- Видали маркетинговий шум: суперлатива, «#1», waterline-тексти.
-- Залиш тільки перевіряльні факти: дати, метрики, продукт/фічі, обмеження, CTA.
-- У `.clean.md` використовуй секції: `## Facts`, `## Claims to verify`, `## Contacts/CTA`.
-- Вказуй одиниці виміру та діапазони, якщо є.
-- Не вигадуй дані; якщо щось незрозуміло — додай у `Claims to verify`.
+## Output
 
-## 4. Оновлення індексу
-Після створення файлів додай у запис:
-- `clean_output_paths`: список шляхів створених файлів;
-- `last_ingestion_run`: час виконання (UTC, ISO8601).
+For each input file `<path>`:
 
-## 5. Лог
-Додай запис у `ingestion/logs/ingestion-marketing-cleaning-YYYYMMDD-HHMM.md`:
-- скільки файлів оброблено;
-- де створені результати;
-- чи були винятки.
+- `<path>.clean.md`
+  - structured, cleaned version of the content.
+- `<path>.summary.md`
+  - 10–20 lines summary with core ideas.
+
+## Steps
+
+1. **Extract facts**
+   - Product / service being described.
+   - Target users / roles.
+   - Key user flows (journeys).
+   - Key constraints (technical, legal, behavioural).
+   - Any explicit metrics, SLA, economics.
+
+2. **Remove noise**
+   - Buzzwords and emotional language (revolutionary, seamless, magic…).
+   - Repetitions.
+   - Vague claims without concrete consequences.
+
+3. **Restructure**
+   - Use clear sections:
+     - `Overview`
+     - `Target users`
+     - `Key flows`
+     - `Constraints`
+     - `Open questions`
+   - Use bullet lists where possible.
+   - Preserve all factual information, do not invent new facts.
+
+4. **Summary**
+   - Create `<path>.summary.md`:
+     - 10–20 lines.
+     - Focus on what this actually changes in the system / product.
+
+5. **Index update (done by agent)**
+   - In `ingestion/ingestion-index.yaml`:
+     - for the original file, add `clean_output_paths` with both new paths.

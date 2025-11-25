@@ -1,65 +1,90 @@
 # Ingestion Rules
 
-Цей документ визначає правила роботи `repo-ingestion-agent`:
-- як класифікувати файли (`kind`, `subtype`),
-- які рішення (`decision`) приймати,
-- які поля потрібно заповнювати в `ingestion/ingestion-index.yaml`.
+These rules are used by `repo-ingestion-agent` to classify and score files.
 
-## 1. Таксономія файлів
-- **doc/marketing** — пітчі, презентації, тексти для сайту, прес-релізи.
-- **doc/narrative** — довгі описи продукту, процесів, маніфести.
-- **doc/spec** — специфікації, RFC, архітектурні нотатки.
-- **doc/note** — чернетки, особисті нотатки, фріформ.
-- **data/sample** — семпли YAML/JSON/CSV без коду.
-- **code/snippet** — дрібні фрагменти коду, що вимагають класифікації.
-- **code/project** — повні модулі/пакети/скрипти.
-- **config/infra** — terraform/k8s/docker, інфраструктурні конфіги.
-- **config/app** — налаштування застосунків, CLI, шаблони.
+## 1. Classification
 
-## 2. Оцінки (0..1)
-- **relevance_score** — наскільки файл відповідає Trutta Hub (0 = сторонній шум, 1 = ядро).
-- **novelty_score** — чи містить нову інформацію щодо вже існуючих матеріалів.
-- **actuality_score** — наскільки файл актуальний/несвіжий (1 = свіже, 0 = застаріле).
+For each file in the repository:
 
-Швидкі евристики:
-- Маркетинг із датою < 2023 → actuality 0.3–0.5.
-- Код із посиланням на чинні модулі → relevance 0.8–1.0.
-- Чернетки без контексту → relevance 0.2–0.5, novelty 0.2–0.4.
+1. Detect `kind` (by path, extension, and basic content):
+   - `doc`    — markdown, txt, doc-like textual content.
+   - `code`   — .ts, .js, .py, .sql, .sh, .tf, .yaml, etc.
+   - `data`   — .json, .csv and other structured data.
+   - `media`  — images, pdf, binary assets.
+   - `other`  — everything else.
 
-## 3. Decision matrix
-- **ignore** — службові файли, бінарні артефакти, `.gitkeep`, індекси.
-- **archive** — неактуальні або дубльовані чернетки/замітки.
-- **compress_clean** — маркетингові тексти для стиснення та виділення фактів.
-- **promote_candidate** — код, специфікації, конфіги, що потенційно йдуть у канон.
+2. Detect `subtype`:
 
-## 4. linked_artefact_id
-- Заповнюй, якщо файл явно належить до артефакту (наприклад, `TEMPLATE-SOSPESO`, `PD-001`).
-- Якщо немає явного відповідника — залишай `null`.
+- For `doc`:
+  - `marketing` — pitches, promo, vision-heavy text.
+  - `spec`      — clear technical or product specs.
+  - `note`      — internal notes, scratchpad.
+  - `legal`     — terms, policies, agreements.
+  - `log`       — logs, changelog-like.
+  - `other`     — anything that doesn't fit above.
 
-## 5. Поля запису
-Кожен запис у `files:` має вигляд:
-```yaml
-- path: "path/from/repo/root"
-  kind: "doc|code|data|config"
-  subtype: "marketing|narrative|spec|note|sample|snippet|project|infra|app"
-  size_bytes: <int>
-  created_at: "<ISO8601>"          # якщо недоступно — залишити порожнім
-  detected_language: "uk|en|..."   # для тексту/коду
-  relevance_score: 0.0
-  novelty_score: 0.0
-  actuality_score: 0.0
-  decision: "ignore|archive|compress_clean|promote_candidate"
-  linked_artefact_id: null
-  last_ingestion_run: "<ISO8601>"
-```
+- For `code`:
+  - `snippet`   — short, non-standalone examples.
+  - `script`    — runnable CLIs / utilities.
+  - `template`  — skeletons intended for reuse.
+  - `infra`     — Docker/Terraform/k8s/Supabase config.
+  - `test`      — tests/specs (unit/integration).
+  - `other`.
 
-## 6. Виключення зі сканування
-Не індексуй:
-- `.git/`, `node_modules/`, `dist/`, `build/`, тимчасові/бінарні файли,
-- згенеровані `.clean.md` та `.summary.md` (щоб не дублювати).
+- For `data`:
+  - `schema_sample`   — samples showing structure.
+  - `dataset_sample`  — small example datasets.
+  - `log_export`      — raw export logs.
+  - `other`.
 
-## 7. Логи
-Кожен прогін пише короткий звіт у `ingestion/logs/ingestion-<label>-YYYYMMDD-HHMM.md`:
-- кількість знайдених файлів;
-- розподіл по decision (`archive`, `compress_clean`, `promote_candidate`);
-- помітні винятки.
+## 2. Scoring
+
+All scores are floats in [0, 1].
+
+### 2.1. `relevance_score`
+
+How much this file belongs to the Trutta/TJM/ABC/data stack.
+
+Signals:
+- **Path / filename** contains domain terms:
+  - `trutta`, `tjm`, `abc`, `sospeso`, `bread`, `token`, `voucher`,
+    `journey`, `vendor`, `supabase`, `reis`, `ri6`, `city`, `guide`.
+- **Content** mentions:
+  - tokenization of services/meals, travel journey, anonymous buyers, industrial domains (tourism / hospitality / services / food / health).
+- Clearly unrelated / misc → low relevance.
+
+### 2.2. `novelty_score`
+
+How different this file is from what we already have.
+
+Signals:
+- Similarity (hash / semantic) to existing files:
+  - almost identical → low novelty;
+  - new flows, new APIs, new domain insights → higher novelty.
+- For code: AST-level similarity (same structure = low novelty).
+
+### 2.3. `actuality_score`
+
+How up-to-date the content and stack are.
+
+Signals:
+- File timestamps (rough heuristic).
+- Mentioned stack:
+  - current versions, non-deprecated APIs → higher.
+  - clearly legacy libraries / old product naming → lower.
+- For domain docs: references to current product names and structure.
+
+## 3. Decisions
+
+Based on `kind`, `subtype` and scores, choose:
+
+- `ignore`
+  - technical noise: cache, compiled, local artifacts.
+- `archive`
+  - legacy / historical content worth keeping but not promoting.
+- `compress_clean`
+  - marketing / noisy docs where we can extract structured facts.
+- `promote_candidate`
+  - high-value spec/code/concept that should be considered for canonicalisation.
+
+The agent must be conservative: when in doubt, prefer `archive` over `promote_candidate`.
