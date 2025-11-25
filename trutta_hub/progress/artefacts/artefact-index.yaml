@@ -1,0 +1,19 @@
+version: 1
+updated_at: "2025-11-24T00:00:00Z"
+
+artefacts:
+  - id: "PD-001"
+    type: "pd"            # pd|vg|concept|domain|schema|template|agent|infra|progress|monitoring|other
+    path: "docs/pd/PD-001-product-dsl-blueprint.md"
+    title: "Product DSL Blueprint"
+    scope: "trutta-core"
+    domains: ["tourism", "food"]
+    concepts: ["tjm", "tokenization"]
+    status: "draft"        # draft|in_review|canonical|deprecated|conflict
+    owner: "arch"          # arch|product|data|ops|legal|ai-ops
+    created_at: ""
+    updated_at: ""
+    source: ""
+    tags: ["spec"]
+    depends_on: []
+    supersedes: []
