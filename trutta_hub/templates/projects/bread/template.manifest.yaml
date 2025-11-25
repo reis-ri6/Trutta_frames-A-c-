@@ -1,0 +1,11 @@
+apiVersion: trutta.projects/v1
+kind: ProjectTemplate
+id: "TEMPLATE-BREAD"
+name: "Bread Project Template"
+concepts: []
+domains: []
+default_stack:
+  backend: ""
+  db: ""
+scaffold_paths: []
+post_install_steps: []
