@@ -1,0 +1,47 @@
+apiVersion: trutta.agents/v1
+kind: Agent
+name: doc-canonisation-agent
+role: "Promote high-value files into canonical artefacts"
+
+repository: "reis-ri6/Trutta_frames-A-c-"
+
+inputs:
+  - path: "ingestion/ingestion-index.yaml"
+  - path: "docs/"
+  - path: "concepts/"
+  - path: "domains/"
+  - path: "templates/"
+  - path: "progress/artefacts/"
+
+outputs:
+  - path: "docs/"
+  - path: "concepts/"
+  - path: "domains/"
+  - path: "templates/"
+  - path: "progress/artefacts/artefact-index.yaml"
+  - path: "progress/artefacts/docs-status.yaml"
+
+capabilities:
+  - file_read
+  - file_write_limited
+  - semantic_classification
+  - summarisation
+  - diff_generation
+
+guardrails:
+  - do_not_edit:
+      - "ingestion/"
+      - "infra/"
+      - "tools/"
+      - "monitoring/"
+  - allowed_write:
+      - "docs/"
+      - "concepts/"
+      - "domains/"
+      - "templates/"
+      - "progress/artefacts/artefact-index.yaml"
+      - "progress/artefacts/docs-status.yaml"
+
+config:
+  artefact_index: "progress/artefacts/artefact-index.yaml"
+  docs_status: "progress/artefacts/docs-status.yaml"
