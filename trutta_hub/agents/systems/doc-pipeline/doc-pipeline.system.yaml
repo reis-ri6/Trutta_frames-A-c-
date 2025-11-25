@@ -1,20 +1,92 @@
-apiVersion: trutta.agents/v1
-kind: System
+apiVersion: trutta.systems/v1
+kind: AgentSystem
 name: doc-pipeline
-type: data-conveyor
+role: "Two-stage documentation pipeline: ingestion → canonisation"
+
+repository: "reis-ri6/Trutta_frames-A-c-"
 
 description: |
-  Two-stage document pipeline:
-  1) repo-ingestion-agent scans the repository and fills ingestion-index.
-  2) doc-canonisation-agent promotes the best candidates into canonical artefacts.
+  Run repo-ingestion-agent to scan and classify repository files into the ingestion index,
+  then run doc-canonisation-agent to turn selected candidates into canonical artefacts.
 
-stages:
-  - name: ingestion
-    agents:
-      - repo-ingestion-agent
+agents:
+  ingestion:
+    name: repo-ingestion-agent
+    manifest: "agents/patterns/repo-ingestion-agent/repo-ingestion.agent.yaml"
+    system_prompt: "agents/patterns/repo-ingestion-agent/repo-ingestion.prompt.md"
 
-  - name: canonisation
-    agents:
-      - doc-canonisation-agent
+  canonisation:
+    name: doc-canonisation-agent
+    manifest: "agents/patterns/doc-canonisation-agent/doc-canonisation.agent.yaml"
+    system_prompt: "agents/patterns/doc-canonisation-agent/doc-canonisation.prompt.md"
 
-schedule: "manual"    # can be triggered manually or by an external orchestrator
+io:
+  ingestion_index_file: "ingestion/ingestion-index.yaml"
+  artefact_index_file: "progress/artefacts/artefact-index.yaml"
+  docs_status_file: "progress/artefacts/docs-status.yaml"
+  logs_dir: "ingestion/logs/"
+
+workflow:
+  # Базовий сценарій: прогнати ingestion, потім канонізацію.
+  steps:
+    - id: ingestion-run
+      agent: ingestion
+      description: "Scan repo, update ingestion-index.yaml, optionally create *.clean.md/*.summary.md."
+      inputs:
+        - "./"
+        - "ingestion/README.md"
+        - "ingestion/rules.md"
+        - "ingestion/transforms/marketing-cleaning.md"
+        - "ingestion/transforms/code-classification.md"
+        - "ingestion/ingestion-index.yaml"
+        - "progress/artefacts/artefact-index.yaml"
+      outputs:
+        - "ingestion/ingestion-index.yaml"
+        - "ingestion/logs/"
+        - "**/*.clean.md"
+        - "**/*.summary.md"
+
+    - id: canonisation-run
+      agent: canonisation
+      description: "Read ingestion-index.yaml, promote candidates into canonical docs and update artefact indexes."
+      depends_on:
+        - ingestion-run
+      inputs:
+        - "ingestion/ingestion-index.yaml"
+        - "progress/artefacts/artefact-index.yaml"
+        - "progress/artefacts/docs-status.yaml"
+        - "docs/"
+        - "concepts/"
+        - "domains/"
+        - "templates/"
+      outputs:
+        - "docs/"
+        - "concepts/"
+        - "domains/"
+        - "templates/"
+        - "progress/artefacts/artefact-index.yaml"
+        - "progress/artefacts/docs-status.yaml"
+
+triggers:
+  # Можеш завʼязати це на CI або ручний запуск.
+  manual:
+    description: "Run full doc pipeline manually."
+  on_branch:
+    branches:
+      - "main"
+      - "develop"
+    paths_changed:
+      - "docs/**"
+      - "concepts/**"
+      - "domains/**"
+      - "templates/**"
+      - "import/**"
+      - "ingestion/**"
+
+policies:
+  # Ніякої автоканонізації до статусу canonical.
+  auto_canonicalisation: false
+  max_candidates_per_run: 50     # обмеження для безпечних батчів
+  require_min_scores:
+    relevance_score: 0.5
+    actuality_score: 0.4
