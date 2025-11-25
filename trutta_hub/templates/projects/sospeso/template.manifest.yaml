@@ -1,0 +1,26 @@
+apiVersion: trutta.projects/v1
+kind: ProjectTemplate
+id: "TEMPLATE-SOSPESO"
+name: "Sospeso Project Template"
+
+concepts:
+  - "trutta-meals-services-tokenization"
+  - "abc-anonymous-buyers-community"
+
+domains:
+  - "services"
+  - "food"
+
+default_stack:
+  backend: "node-ts"
+  db: "supabase-postgres"
+
+scaffold_paths:
+  - "scaffold/services"
+  - "scaffold/infra"
+  - "scaffold/config"
+
+post_install_steps:
+  - "update env config"
+  - "run migrations"
+  - "seed base data"
