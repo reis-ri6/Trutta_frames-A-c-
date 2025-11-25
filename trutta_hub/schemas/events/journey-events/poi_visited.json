@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "POIVisited",
+  "type": "object",
+  "properties": {
+    "event_id": { "type": "string", "format": "uuid" },
+    "journey_id": { "type": "string", "format": "uuid" },
+    "poi_id": { "type": "string" },
+    "visited_at": { "type": "string", "format": "date-time" },
+    "source": { "type": "string" }
+  },
+  "required": ["event_id", "journey_id", "poi_id", "visited_at"]
+}

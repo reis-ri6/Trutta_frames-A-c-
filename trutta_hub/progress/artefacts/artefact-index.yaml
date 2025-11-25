@@ -1,0 +1,129 @@
+version: 1
+updated_at: "2025-11-25T00:00:00Z"
+
+# Головний індекс canonical-артефактів Trutta Hub.
+# Один запис = один PD/VG/CONCEPT/DOMAIN/TEMPLATE/інший ключовий док.
+
+artefacts:
+  # === ПРИКЛАДИ (можна залишити як стартовий seed, далі дописуватиме агент) ===
+
+  - id: "PD-001"
+    type: "pd"    # pd | vg | concept | domain | template | policy | other
+    path: "docs/pd/PD-001-product-dsl-blueprint.md"
+    title: "Product DSL Blueprint"
+    scope: "trutta-core"      # ядро/модуль/продукт
+    domains: ["tourism", "services", "food"]
+    concepts: ["tjm", "trutta-tokenization"]
+    status: "draft"           # draft | in_review | canonical | deprecated | conflict
+    owner: "arch"             # arch | product | data | ops | legal | ai-ops | other
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "manual"          # manual | migrated | ingestion
+    tags: ["spec", "core"]
+    depends_on: []            # список id інших артефактів
+    supersedes: []            # які id цей артефакт замінює/знімає з канону
+    notes: "Initial seed of PD-001 from legacy docs."
+
+  - id: "PD-003"
+    type: "pd"
+    path: "docs/pd/PD-003-dsl-file-types-and-schemas.md"
+    title: "Trutta DSL File Types & Schemas"
+    scope: "trutta-core"
+    domains: ["tourism", "hospitality", "services", "food", "health"]
+    concepts: ["tjm", "abc", "trutta-tokenization"]
+    status: "draft"
+    owner: "arch"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "manual"
+    tags: ["spec", "dsl", "schema-contract"]
+    depends_on: ["PD-001", "PD-002"]
+    supersedes: []
+    notes: "Defines DSL artefact types, directory conventions, and minimal fields."
+
+  - id: "PD-004"
+    type: "pd"
+    path: "docs/pd/PD-004-industrial-data-and-knowledge-layers.md"
+    title: "Industrial Data & Knowledge Layers"
+    scope: "trutta-core"
+    domains: ["tourism", "hospitality", "services", "food", "health", "city"]
+    concepts: ["tjm", "abc", "trutta-tokenization"]
+    status: "draft"
+    owner: "data"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "manual"
+    tags: ["spec", "data-layer", "knowledge"]
+    depends_on: ["PD-001", "PD-002", "PD-003"]
+    supersedes: []
+    notes: "Defines raw/reference/canonical/analytics/AI layers and registries across industrial domains."
+
+  - id: "PD-005"
+    type: "pd"
+    path: "docs/pd/PD-005-token-types-and-lifecycle.md"
+    title: "Trutta Token Types & Lifecycle"
+    scope: "trutta-core"
+    domains: ["tourism", "hospitality", "services", "food", "health", "city"]
+    concepts: ["tjm", "abc", "trutta-tokenization"]
+    status: "draft"
+    owner: "arch"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "manual"
+    tags: ["spec", "token", "lifecycle"]
+    depends_on: ["PD-001", "PD-002", "PD-003", "PD-004"]
+    supersedes: []
+    notes: "Defines token archetypes, lifecycle, constraints, and guardrails for Trutta entitlements."
+
+  - id: "VG-500"
+    type: "vg"
+    path: "docs/vg/VG-500-vendor-onboarding.md"
+    title: "Vendor Onboarding — Trutta/Sospeso"
+    scope: "vendor-network"
+    domains: ["services", "hospitality"]
+    concepts: ["abc", "trutta-tokenization"]
+    status: "draft"
+    owner: "ops"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "migrated"        # наприклад: міграція з Trutta_frames-A-c-
+    tags: ["runbook", "onboarding"]
+    depends_on: ["PD-001"]
+    supersedes: []
+    notes: "Migrated from legacy VG-500, requires review."
+
+  - id: "CONCEPT-TJM"
+    type: "concept"
+    path: "concepts/tjm-travel-journey-map/00-overview.md"
+    title: "TJM — Travel Journey Map"
+    scope: "tjm"
+    domains: ["tourism"]
+    concepts: []
+    status: "draft"
+    owner: "product"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "migrated"
+    tags: ["concept"]
+    depends_on: []
+    supersedes: []
+    notes: "Core model for travel journeys."
+
+  - id: "TEMPLATE-SOSPESO"
+    type: "template"
+    path: "templates/projects/sospeso/template.manifest.yaml"
+    title: "Sospeso Project Template"
+    scope: "sospeso"
+    domains: ["services", "food"]
+    concepts: ["abc", "trutta-tokenization"]
+    status: "draft"
+    owner: "arch"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "manual"
+    tags: ["template", "project"]
+    depends_on: ["PD-001", "VG-500"]
+    supersedes: []
+    notes: "Base scaffold for Sospeso rollouts."
+
+  # Далі repo-ingestion-agent + doc-canonisation-agent додають нові записи або оновлюють існуючі.
