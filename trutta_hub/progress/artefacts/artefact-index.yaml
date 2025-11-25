@@ -58,6 +58,23 @@ artefacts:
     supersedes: []
     notes: "Defines raw/reference/canonical/analytics/AI layers and registries across industrial domains."
 
+  - id: "PD-005"
+    type: "pd"
+    path: "docs/pd/PD-005-token-types-and-lifecycle.md"
+    title: "Trutta Token Types & Lifecycle"
+    scope: "trutta-core"
+    domains: ["tourism", "hospitality", "services", "food", "health", "city"]
+    concepts: ["tjm", "abc", "trutta-tokenization"]
+    status: "draft"
+    owner: "arch"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "manual"
+    tags: ["spec", "token", "lifecycle"]
+    depends_on: ["PD-001", "PD-002", "PD-003", "PD-004"]
+    supersedes: []
+    notes: "Defines token archetypes, lifecycle, constraints, and guardrails for Trutta entitlements."
+
   - id: "VG-500"
     type: "vg"
     path: "docs/vg/VG-500-vendor-onboarding.md"

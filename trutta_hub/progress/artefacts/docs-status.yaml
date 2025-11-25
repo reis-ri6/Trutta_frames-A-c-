@@ -6,10 +6,10 @@ updated_at: "2025-11-25T00:00:00Z"
 # docs-status.yaml         = "в якому стані цей артефакт і що з ним робити"
 
 summary:
-  total: 6
+  total: 7
   by_status:
     missing: 0        # немає файла, тільки запис в індексі
-    draft: 6
+    draft: 7
     in_review: 0
     canonical: 0
     deprecated: 0
@@ -45,6 +45,16 @@ items:
     last_agent_update: null
     last_agent_id: null
     notes: "Outlines data/knowledge layers (raw/reference/canonical/analytics/AI) and registries across industrial domains; needs mapping to concrete pipelines and schemas."
+
+  # === PD-005 ===
+  - id: "PD-005"
+    path: "docs/pd/PD-005-token-types-and-lifecycle.md"
+    type: "pd"
+    status: "draft"
+    readiness_score: 0.3
+    last_agent_update: null
+    last_agent_id: null
+    notes: "Defines token archetypes, lifecycle, constraints, and fraud/abuse guardrails; requires mapping to runtime (VG-8xx) and analytics (VG-9xx)."
 
   # === VG-500 ===
   - id: "VG-500"
