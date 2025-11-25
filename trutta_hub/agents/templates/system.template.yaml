@@ -1,0 +1,16 @@
+apiVersion: trutta.agents/v1
+kind: System
+name: <system-name>
+type: <data-raid|data-conveyor|macro-team>
+
+stages:
+  - name: "stage-1"
+    agents: ["agent-a", "agent-b"]
+  - name: "stage-2"
+    agents: ["agent-c"]
+
+domains:
+  - "tourism"
+  - "services"
+
+schedule: "manual"  # або cron вираз
