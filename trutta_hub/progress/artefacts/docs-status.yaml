@@ -6,10 +6,10 @@ updated_at: "2025-11-25T00:00:00Z"
 # docs-status.yaml         = "в якому стані цей артефакт і що з ним робити"
 
 summary:
-  total: 9
+  total: 10
   by_status:
     missing: 0        # немає файла, тільки запис в індексі
-    draft: 9
+    draft: 10
     in_review: 0
     canonical: 0
     deprecated: 0
@@ -75,6 +75,16 @@ items:
     last_agent_update: null
     last_agent_id: null
     notes: "ABC demand-side framework outlining avatars, segments, demand pools, group tokens, privacy, and fraud guardrails; needs DBSchema/domain mappings and analytics KPIs."
+
+  # === PD-008 ===
+  - id: "PD-008"
+    path: "docs/pd/PD-008-agent-and-automation-layer.md"
+    type: "pd"
+    status: "draft"
+    readiness_score: 0.25
+    last_agent_update: null
+    last_agent_id: null
+    notes: "Agent and automation layer covering roles, contracts, pipelines, guardrails, and repo integration; needs operational playbooks and telemetry baselines."
 
   # === VG-500 ===
   - id: "VG-500"
