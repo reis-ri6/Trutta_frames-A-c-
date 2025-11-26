@@ -6,10 +6,10 @@ updated_at: "2025-11-25T00:00:00Z"
 # docs-status.yaml         = "в якому стані цей артефакт і що з ним робити"
 
 summary:
-  total: 12
+  total: 14
   by_status:
     missing: 0        # немає файла, тільки запис в індексі
-    draft: 12
+    draft: 14
     in_review: 0
     canonical: 0
     deprecated: 0
@@ -105,6 +105,26 @@ items:
     last_agent_update: null
     last_agent_id: null
     notes: "Repository/documentation conventions covering repo types, directory layouts, artefact indices, and agent expectations; needs template updates and cross-repo alignment."
+
+  # === PD-011 ===
+  - id: "PD-011"
+    path: "docs/pd/PD-011-security-privacy-governance-baseline.md"
+    type: "pd"
+    status: "draft"
+    readiness_score: 0.35
+    last_agent_update: null
+    last_agent_id: null
+    notes: "Security/privacy/data-governance baseline; needs alignment with concrete security handbooks, runtime RLS/ABAC configs, and audit pipelines."
+
+  # === PD-012 ===
+  - id: "PD-012"
+    path: "docs/pd/PD-012-trutta-runtime-service-architecture.md"
+    type: "pd"
+    status: "draft"
+    readiness_score: 0.3
+    last_agent_update: null
+    last_agent_id: null
+    notes: "High-level runtime architecture across planes, bounded contexts, events, and multi-tenant layering; needs detailed C4 diagrams and concrete service contracts (VG-800/801)."
 
   # === VG-500 ===
   - id: "VG-500"
