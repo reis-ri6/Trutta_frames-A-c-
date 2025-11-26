@@ -1,0 +1,102 @@
+version: 1
+updated_at: "2025-11-25T00:00:00Z"
+
+source_repo: "reis-ri6/Trutta_frames-A-c-"
+target_repo: "reis-ri6/Trutta_frames-A-c-"  # canonical structure (Trutta Hub)
+
+description: >
+  Mapping між старою структурою Trutta_frames-A-c- і новою canonical-структурою Trutta Hub.
+  Використовується людьми й агентами для міграції PD/VG/CONCEPT/DOMAIN/TEMPLATE.
+
+defaults:
+  # Як поводитись із файлами, що не мають явного мапінгу
+  unmapped_policy: "ignore"   # ignore | import_as_raw | needs_manual_review
+
+entries:
+  # === Приклад: PD-001 — Product DSL Blueprint ===
+  - id: "PD-001"
+    type: "pd"
+    status: "planned"          # planned | in_progress | completed
+    source:
+      paths:
+        - "docs/PD-001-product-dsl-blueprint.md"
+        - "docs/00C-product-dsl-overview.md"
+      notes: >
+        Кілька версій опису продуктового DSL. Містять дублювання, legacy-терміни
+        та різні варіанти структури.
+    target:
+      path: "docs/pd/PD-001-product-dsl-blueprint.md"
+      notes: >
+        Єдиний canonical-документ. Потребує повного перепису, конденсації й
+        узгодження з TJM/ABC/Trutta tokenization.
+    strategy:
+      mode: "merge_and_rewrite"   # copy | merge_and_rewrite | reference_only
+      use_clean_variants: true    # якщо існують *.clean.md з ingestion
+      keep_legacy_links: true
+    owner: "arch"
+
+  # === VG-500 — Vendor Onboarding ===
+  - id: "VG-500"
+    type: "vg"
+    status: "planned"
+    source:
+      paths:
+        - "docs/VG-500-vendor-onboarding-vienna.md"
+        - "docs/VG-500-vendor-onboarding-generic.md"
+      notes: >
+        Окремі версії онбордингу вендорів (локальна і загальна). Legacy-флоу,
+        старі назви токенів і продуктів.
+    target:
+      path: "docs/vg/VG-500-vendor-onboarding.md"
+      notes: >
+        Canonical-гайд для онбордингу вендорів Trutta/Sospeso, з параметризацією
+        під міста/ринки через окремі секції/додатки.
+    strategy:
+      mode: "merge_and_rewrite"
+      use_clean_variants: true
+      keep_legacy_links: false
+    owner: "ops"
+
+  # === CONCEPT-TJM — Travel Journey Map ===
+  - id: "CONCEPT-TJM"
+    type: "concept"
+    status: "planned"
+    source:
+      paths:
+        - "concepts/tjm-overview.md"
+        - "concepts/tjm-vienna-notes.md"
+      notes: >
+        Різні варіанти опису TJM, включно з кейсовими примітками по Відню.
+    target:
+      path: "concepts/tjm-travel-journey-map/00-overview.md"
+      notes: >
+        Стисла, формальна версія TJM як моделі, без кейсового шуму. Кейси
+        переносяться в окремі приклади/appendix.
+    strategy:
+      mode: "merge_and_rewrite"
+      use_clean_variants: false
+      keep_legacy_links: true
+    owner: "product"
+
+  # === TEMPLATE-SOSPESO — Project Template ===
+  - id: "TEMPLATE-SOSPESO"
+    type: "template"
+    status: "planned"
+    source:
+      paths:
+        - "projects/sospeso/project-template.yaml"
+        - "projects/sospeso/docs/overview.md"
+      notes: >
+        Чернеткові темплейти розгортання Sospeso, змішані з описами кампаній.
+    target:
+      path: "templates/projects/sospeso/template.manifest.yaml"
+      notes: >
+        Стандартизований маніфест проєкту Sospeso + посилання на супутні
+        документи (flows, data, infra).
+    strategy:
+      mode: "rewrite_as_template"
+      use_clean_variants: true
+      keep_legacy_links: false
+    owner: "arch"
+
+  # Нові записи додаються агентами/людьми в міру виявлення важливих артефактів.
