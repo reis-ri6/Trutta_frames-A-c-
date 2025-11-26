@@ -6,10 +6,10 @@ updated_at: "2025-11-25T00:00:00Z"
 # docs-status.yaml         = "в якому стані цей артефакт і що з ним робити"
 
 summary:
-  total: 10
+  total: 11
   by_status:
     missing: 0        # немає файла, тільки запис в індексі
-    draft: 10
+    draft: 11
     in_review: 0
     canonical: 0
     deprecated: 0
@@ -85,6 +85,16 @@ items:
     last_agent_update: null
     last_agent_id: null
     notes: "Agent and automation layer covering roles, contracts, pipelines, guardrails, and repo integration; needs operational playbooks and telemetry baselines."
+
+  # === PD-009 ===
+  - id: "PD-009"
+    path: "docs/pd/PD-009-city-and-project-instantiation-model.md"
+    type: "pd"
+    status: "draft"
+    readiness_score: 0.25
+    last_agent_update: null
+    last_agent_id: null
+    notes: "Defines hub → city → project layering, inheritance rules, and repo patterns; needs city/project repo examples and onboarding pipelines."
 
   # === VG-500 ===
   - id: "VG-500"
