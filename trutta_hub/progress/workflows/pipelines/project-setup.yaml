@@ -1,0 +1,23 @@
+id: "WF-PROJECT-SETUP"
+name: "Project Setup Workflow"
+
+steps:
+  - id: "create-repo"
+    description: "Створити новий репо з проектного темплейта"
+    owner: "arch"
+    inputs:
+      - "templates/projects/<template-id>"
+    outputs:
+      - "новий репозиторій"
+
+  - id: "configure-env"
+    description: "Налаштувати середовища та секрети"
+    owner: "devops"
+
+  - id: "run-migrations"
+    description: "Прогнати міграції БД"
+    owner: "backend"
+
+  - id: "smoke-test"
+    description: "Виконати базові тести працездатності"
+    owner: "qa"

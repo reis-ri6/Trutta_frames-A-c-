@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SegmentStarted",
+  "type": "object",
+  "properties": {
+    "event_id": { "type": "string", "format": "uuid" },
+    "journey_id": { "type": "string", "format": "uuid" },
+    "segment_id": { "type": "string" },
+    "started_at": { "type": "string", "format": "date-time" },
+    "source": { "type": "string" }
+  },
+  "required": ["event_id", "journey_id", "segment_id", "started_at"]
+}
