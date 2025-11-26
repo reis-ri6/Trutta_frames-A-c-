@@ -92,6 +92,23 @@ artefacts:
     supersedes: []
     notes: "Canonical travel journey model linking DSL, tokens, domains, and analytics across stages/steps."
 
+  - id: "PD-007"
+    type: "pd"
+    path: "docs/pd/PD-007-abc-core-framework.md"
+    title: "ABC (Anonymous Buyers Community) — Core Framework for Trutta"
+    scope: "trutta-core"
+    domains: ["tourism", "services", "hospitality", "food", "health", "city"]
+    concepts: ["abc", "tjm", "trutta-tokenization"]
+    status: "draft"
+    owner: "product"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "manual"
+    tags: ["spec", "abc", "demand"]
+    depends_on: ["PD-001", "PD-002", "PD-003", "PD-004", "PD-005", "PD-006"]
+    supersedes: []
+    notes: "Demand-side framework covering avatars, segments, demand pools, group tokens, and privacy/fraud guardrails."
+
   - id: "VG-500"
     type: "vg"
     path: "docs/vg/VG-500-vendor-onboarding.md"
