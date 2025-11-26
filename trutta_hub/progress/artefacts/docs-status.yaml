@@ -6,10 +6,10 @@ updated_at: "2025-11-25T00:00:00Z"
 # docs-status.yaml         = "в якому стані цей артефакт і що з ним робити"
 
 summary:
-  total: 14
+  total: 15
   by_status:
     missing: 0        # немає файла, тільки запис в індексі
-    draft: 14
+    draft: 15
     in_review: 0
     canonical: 0
     deprecated: 0
@@ -125,6 +125,16 @@ items:
     last_agent_update: null
     last_agent_id: null
     notes: "High-level runtime architecture across planes, bounded contexts, events, and multi-tenant layering; needs detailed C4 diagrams and concrete service contracts (VG-800/801)."
+
+  # === PD-013 ===
+  - id: "PD-013"
+    path: "docs/pd/PD-013-vendor-service-network-model.md"
+    type: "pd"
+    status: "draft"
+    readiness_score: 0.25
+    last_agent_update: null
+    last_agent_id: null
+    notes: "Vendor/service network model covering entities, integration tiers (L0–L3), and links to DSL, tokens, TJM, and ABC; needs DB/domain schemas and VG-500..504 alignment."
 
   # === VG-500 ===
   - id: "VG-500"
