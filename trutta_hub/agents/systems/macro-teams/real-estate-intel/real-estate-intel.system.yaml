@@ -1,0 +1,6 @@
+apiVersion: trutta.agents/v1
+kind: System
+name: real-estate-intel
+stages: []
+domains: []
+schedule: "manual"
