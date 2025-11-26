@@ -143,6 +143,23 @@ artefacts:
     supersedes: []
     notes: "Defines hub → city → project layering, inheritance rules, and repo patterns for Trutta instances."
 
+  - id: "PD-010"
+    type: "pd"
+    path: "docs/pd/PD-010-trutta-repo-and-docs-conventions.md"
+    title: "Trutta Repositories & Documentation Conventions"
+    scope: "trutta-core"
+    domains: ["tourism", "hospitality", "services", "food", "health", "city"]
+    concepts: ["tjm", "abc", "trutta-tokenization"]
+    status: "draft"
+    owner: "arch"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "manual"
+    tags: ["spec", "conventions", "docs", "repo"]
+    depends_on: ["PD-001", "PD-002", "PD-003", "PD-004", "PD-005", "PD-006", "PD-007", "PD-008", "PD-009"]
+    supersedes: []
+    notes: "Repo/documentation conventions covering repo types, directory/file naming, artefact indices, and agent usage guidance."
+
   - id: "VG-500"
     type: "vg"
     path: "docs/vg/VG-500-vendor-onboarding.md"
