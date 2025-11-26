@@ -75,6 +75,23 @@ artefacts:
     supersedes: []
     notes: "Defines token archetypes, lifecycle, constraints, and guardrails for Trutta entitlements."
 
+  - id: "PD-006"
+    type: "pd"
+    path: "docs/pd/PD-006-tjm-travel-journey-model.md"
+    title: "TJM (Travel Journey Model) — Core Framework for Trutta"
+    scope: "trutta-core"
+    domains: ["tourism", "city", "services", "hospitality"]
+    concepts: ["tjm", "abc", "trutta-tokenization"]
+    status: "draft"
+    owner: "arch"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "manual"
+    tags: ["spec", "journey", "framework"]
+    depends_on: ["PD-001", "PD-002", "PD-003", "PD-004", "PD-005"]
+    supersedes: []
+    notes: "Canonical travel journey model linking DSL, tokens, domains, and analytics across stages/steps."
+
   - id: "VG-500"
     type: "vg"
     path: "docs/vg/VG-500-vendor-onboarding.md"

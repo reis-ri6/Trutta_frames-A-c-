@@ -6,10 +6,10 @@ updated_at: "2025-11-25T00:00:00Z"
 # docs-status.yaml         = "в якому стані цей артефакт і що з ним робити"
 
 summary:
-  total: 7
+  total: 8
   by_status:
     missing: 0        # немає файла, тільки запис в індексі
-    draft: 7
+    draft: 8
     in_review: 0
     canonical: 0
     deprecated: 0
@@ -55,6 +55,16 @@ items:
     last_agent_update: null
     last_agent_id: null
     notes: "Defines token archetypes, lifecycle, constraints, and fraud/abuse guardrails; requires mapping to runtime (VG-8xx) and analytics (VG-9xx)."
+
+  # === PD-006 ===
+  - id: "PD-006"
+    path: "docs/pd/PD-006-tjm-travel-journey-model.md"
+    type: "pd"
+    status: "draft"
+    readiness_score: 0.35
+    last_agent_update: null
+    last_agent_id: null
+    notes: "Canonical journey model framing stages/steps/micro-journeys and ties to DSL, tokens, domains, and analytics; needs city-level mappings and runtime/analytics specs."
 
   # === VG-500 ===
   - id: "VG-500"
