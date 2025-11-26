@@ -1,0 +1,147 @@
+version: 1
+updated_at: "2025-11-25T00:00:00Z"
+
+# Статуси canonical-артефактів (PD/VG/CONCEPT/DOMAIN/TEMPLATE/...)
+# Індекс artefact-index.yaml = "що це таке"
+# docs-status.yaml         = "в якому стані цей артефакт і що з ним робити"
+
+summary:
+  total: 13
+  by_status:
+    missing: 0        # немає файла, тільки запис в індексі
+    draft: 13
+    in_review: 0
+    canonical: 0
+    deprecated: 0
+    conflict: 0
+
+items:
+  # === PD-001 ===
+  - id: "PD-001"
+    path: "docs/pd/PD-001-product-dsl-blueprint.md"
+    type: "pd"
+    status: "draft"           # draft | in_review | canonical | deprecated | conflict | missing
+    readiness_score: 0.2      # 0..1, оцінка готовності до канонізації
+    last_agent_update: null   # ISO datetime або null, якщо ще не чіпали агенти
+    last_agent_id: null       # імʼя агента, який останнім оновлював статус
+    notes: "Initial seed, requires full rewrite from legacy sources."
+
+  # === PD-003 ===
+  - id: "PD-003"
+    path: "docs/pd/PD-003-dsl-file-types-and-schemas.md"
+    type: "pd"
+    status: "draft"
+    readiness_score: 0.3
+    last_agent_update: null
+    last_agent_id: null
+    notes: "Defines DSL artefact types, schemas, and directory conventions; requires schema files and runtime mapping."
+
+  # === PD-004 ===
+  - id: "PD-004"
+    path: "docs/pd/PD-004-industrial-data-and-knowledge-layers.md"
+    type: "pd"
+    status: "draft"
+    readiness_score: 0.25
+    last_agent_update: null
+    last_agent_id: null
+    notes: "Outlines data/knowledge layers (raw/reference/canonical/analytics/AI) and registries across industrial domains; needs mapping to concrete pipelines and schemas."
+
+  # === PD-005 ===
+  - id: "PD-005"
+    path: "docs/pd/PD-005-token-types-and-lifecycle.md"
+    type: "pd"
+    status: "draft"
+    readiness_score: 0.3
+    last_agent_update: null
+    last_agent_id: null
+    notes: "Defines token archetypes, lifecycle, constraints, and fraud/abuse guardrails; requires mapping to runtime (VG-8xx) and analytics (VG-9xx)."
+
+  # === PD-006 ===
+  - id: "PD-006"
+    path: "docs/pd/PD-006-tjm-travel-journey-model.md"
+    type: "pd"
+    status: "draft"
+    readiness_score: 0.35
+    last_agent_update: null
+    last_agent_id: null
+    notes: "Canonical journey model framing stages/steps/micro-journeys and ties to DSL, tokens, domains, and analytics; needs city-level mappings and runtime/analytics specs."
+
+  # === PD-007 ===
+  - id: "PD-007"
+    path: "docs/pd/PD-007-abc-core-framework.md"
+    type: "pd"
+    status: "draft"
+    readiness_score: 0.3
+    last_agent_update: null
+    last_agent_id: null
+    notes: "ABC demand-side framework outlining avatars, segments, demand pools, group tokens, privacy, and fraud guardrails; needs DBSchema/domain mappings and analytics KPIs."
+
+  # === PD-008 ===
+  - id: "PD-008"
+    path: "docs/pd/PD-008-agent-and-automation-layer.md"
+    type: "pd"
+    status: "draft"
+    readiness_score: 0.25
+    last_agent_update: null
+    last_agent_id: null
+    notes: "Agent and automation layer covering roles, contracts, pipelines, guardrails, and repo integration; needs operational playbooks and telemetry baselines."
+
+  # === PD-009 ===
+  - id: "PD-009"
+    path: "docs/pd/PD-009-city-and-project-instantiation-model.md"
+    type: "pd"
+    status: "draft"
+    readiness_score: 0.25
+    last_agent_update: null
+    last_agent_id: null
+    notes: "Defines hub → city → project layering, inheritance rules, and repo patterns; needs city/project repo examples and onboarding pipelines."
+
+  # === PD-010 ===
+  - id: "PD-010"
+    path: "docs/pd/PD-010-trutta-repo-and-docs-conventions.md"
+    type: "pd"
+    status: "draft"
+    readiness_score: 0.3
+    last_agent_update: null
+    last_agent_id: null
+    notes: "Repository/documentation conventions covering repo types, directory layouts, artefact indices, and agent expectations; needs template updates and cross-repo alignment."
+
+  # === PD-011 ===
+  - id: "PD-011"
+    path: "docs/pd/PD-011-security-privacy-governance-baseline.md"
+    type: "pd"
+    status: "draft"
+    readiness_score: 0.35
+    last_agent_update: null
+    last_agent_id: null
+    notes: "Security/privacy/data-governance baseline; needs alignment with concrete security handbooks, runtime RLS/ABAC configs, and audit pipelines."
+
+  # === VG-500 ===
+  - id: "VG-500"
+    path: "docs/vg/VG-500-vendor-onboarding.md"
+    type: "vg"
+    status: "draft"
+    readiness_score: 0.3
+    last_agent_update: null
+    last_agent_id: null
+    notes: "Migrated from legacy, needs alignment with current vendor flows and token types."
+
+  # === CONCEPT-TJM ===
+  - id: "CONCEPT-TJM"
+    path: "concepts/tjm-travel-journey-map/00-overview.md"
+    type: "concept"
+    status: "draft"
+    readiness_score: 0.4
+    last_agent_update: null
+    last_agent_id: null
+    notes: "High-level description exists in legacy docs; needs condensed, formalised version."
+
+  # === TEMPLATE-SOSPESO ===
+  - id: "TEMPLATE-SOSPESO"
+    path: "templates/projects/sospeso/template.manifest.yaml"
+    type: "template"
+    status: "draft"
+    readiness_score: 0.1
+    last_agent_update: null
+    last_agent_id: null
+    notes: "Scaffold to be filled after PD-001 and VG-500 stabilise."
