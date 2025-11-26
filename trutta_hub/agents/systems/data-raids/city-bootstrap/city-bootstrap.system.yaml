@@ -1,0 +1,6 @@
+apiVersion: trutta.agents/v1
+kind: System
+name: city-bootstrap
+stages: []
+domains: []
+schedule: "manual"
