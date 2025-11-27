@@ -6,10 +6,10 @@ updated_at: "2025-11-25T00:00:00Z"
 # docs-status.yaml         = "в якому стані цей артефакт і що з ним робити"
 
 summary:
-  total: 17
+  total: 18
   by_status:
     missing: 0        # немає файла, тільки запис в індексі
-    draft: 17
+    draft: 18
     in_review: 0
     canonical: 0
     deprecated: 0
@@ -155,6 +155,16 @@ items:
     last_agent_update: null
     last_agent_id: null
     notes: "Analytics/events/measurement framework aligning DSL, TJM, ABC, vendor, and program contexts; needs tracking plan templates, runtime schemas, and BI dashboard baselines."
+
+  # === PD-017 ===
+  - id: "PD-017"
+    path: "docs/pd/PD-017-trutta-data-platform-and-knowledge-graph-blueprint.md"
+    type: "pd"
+    status: "draft"
+    readiness_score: 0.25
+    last_agent_update: null
+    last_agent_id: null
+    notes: "Data platform and knowledge graph blueprint covering data planes, canonical stores, vector/graph layers, and agent access patterns; needs concrete tech stacks, schemas, and ETL specs."
 
   # === VG-500 ===
   - id: "VG-500"
