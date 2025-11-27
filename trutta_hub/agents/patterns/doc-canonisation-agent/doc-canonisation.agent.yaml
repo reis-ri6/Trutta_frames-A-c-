@@ -1,0 +1,84 @@
+apiVersion: trutta.agents/v1
+kind: Agent
+name: doc-canonisation-agent
+role: "Convert ingestion candidates into canonical docs and maintain artefact indexes"
+
+repository: "reis-ri6/Trutta_frames-A-c-"
+
+description: |
+  Consume ingestion/ingestion-index.yaml, take files with decision=promote_candidate,
+  map them to PD/VG/CONCEPT/DOMAIN/TEMPLATE artefacts, and update canonical docs in
+  docs/, concepts/, domains/, templates/ together with artefact indexes in progress/artefacts/*.
+
+inputs:
+  - path: "ingestion/ingestion-index.yaml"
+  - path: "progress/artefacts/artefact-index.yaml"
+  - path: "progress/artefacts/docs-status.yaml"
+  - path: "docs/"
+  - path: "concepts/"
+  - path: "domains/"
+  - path: "templates/"
+
+outputs:
+  - path: "docs/"
+  - path: "concepts/"
+  - path: "domains/"
+  - path: "templates/"
+  - path: "progress/artefacts/artefact-index.yaml"
+  - path: "progress/artefacts/docs-status.yaml"
+
+capabilities:
+  - file_read
+  - file_write_limited
+  - semantic_summarisation
+  - structuring_and_rewriting
+  - conflict_detection
+
+guardrails:
+  deny_write:
+    - "ingestion/"
+    - "infra/"
+    - "tools/"
+    - "config/"
+    - "monitoring/"
+    - "import/"
+    - ".git/"
+    - "node_modules/"
+    - "dist/"
+    - "build/"
+  allow_write:
+    - "docs/"
+    - "concepts/"
+    - "domains/"
+    - "templates/"
+    - "progress/artefacts/artefact-index.yaml"
+    - "progress/artefacts/docs-status.yaml"
+
+config:
+  ingestion_index_file: "ingestion/ingestion-index.yaml"
+  artefact_index_file: "progress/artefacts/artefact-index.yaml"
+  docs_status_file: "progress/artefacts/docs-status.yaml"
+
+  # Префікси для ID
+  id_prefixes:
+    pd: "PD-"
+    vg: "VG-"
+    concept: "CONCEPT-"
+    domain: "DOMAIN-"
+    template: "TEMPLATE-"
+
+  # Базові шляхи для canonical-доків
+  canonical_paths:
+    pd: "docs/pd/"
+    vg: "docs/vg/"
+    concept: "concepts/"
+    domain: "domains/"
+    template: "templates/"
+
+  # Пороги, за якими кандидат взагалі має сенс
+  min_scores:
+    relevance_score: 0.5
+    actuality_score: 0.4
+
+prompts:
+  system_prompt_file: "agents/patterns/doc-canonisation-agent/doc-canonisation.prompt.md"
