@@ -6,10 +6,10 @@ updated_at: "2025-11-25T00:00:00Z"
 # docs-status.yaml         = "в якому стані цей артефакт і що з ним робити"
 
 summary:
-  total: 16
+  total: 17
   by_status:
     missing: 0        # немає файла, тільки запис в індексі
-    draft: 16
+    draft: 17
     in_review: 0
     canonical: 0
     deprecated: 0
@@ -145,6 +145,16 @@ items:
     last_agent_update: null
     last_agent_id: null
     notes: "Programs/subsidies/funding model linking funding sources, pools, policies, tokens, DSL products, ABC demand, and vendor eligibility; needs templates, unit-economics alignment, and analytics wiring."
+
+  # === PD-016 ===
+  - id: "PD-016"
+    path: "docs/pd/PD-016-trutta-analytics-events-and-measurement-model.md"
+    type: "pd"
+    status: "draft"
+    readiness_score: 0.25
+    last_agent_update: null
+    last_agent_id: null
+    notes: "Analytics/events/measurement framework aligning DSL, TJM, ABC, vendor, and program contexts; needs tracking plan templates, runtime schemas, and BI dashboard baselines."
 
   # === VG-500 ===
   - id: "VG-500"

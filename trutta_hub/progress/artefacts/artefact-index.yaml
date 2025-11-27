@@ -228,6 +228,23 @@ artefacts:
     supersedes: []
     notes: "Framework for programs, subsidies, funding pools, and policy-driven tokenized entitlements tied to DSL, ABC, TJM, and vendor networks."
 
+  - id: "PD-016"
+    type: "pd"
+    path: "docs/pd/PD-016-trutta-analytics-events-and-measurement-model.md"
+    title: "Trutta Analytics, Events & Measurement Model"
+    scope: "analytics"
+    domains: ["tourism", "hospitality", "services", "food", "health", "city"]
+    concepts: ["tjm", "abc", "trutta-tokenization"]
+    status: "draft"
+    owner: "data"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "manual"
+    tags: ["spec", "analytics", "events", "measurement"]
+    depends_on: ["PD-001", "PD-002", "PD-003", "PD-004", "PD-005", "PD-006", "PD-007", "PD-008", "PD-009", "PD-010", "PD-011", "PD-012", "PD-013", "PD-014"]
+    supersedes: []
+    notes: "Canonical analytics and events model aligning DSL, TJM, ABC, vendor, and program contexts with metrics and tracking conventions."
+
   - id: "VG-500"
     type: "vg"
     path: "docs/vg/VG-500-vendor-onboarding.md"
