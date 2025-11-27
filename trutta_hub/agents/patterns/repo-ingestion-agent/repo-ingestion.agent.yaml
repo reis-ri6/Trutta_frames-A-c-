@@ -1,0 +1,58 @@
+apiVersion: trutta.agents/v1
+kind: Agent
+name: repo-ingestion-agent
+role: "Ingest and classify repository files into the ingestion index"
+
+repository: "reis-ri6/Trutta_frames-A-c-"
+
+description: |
+  Scan the repository, classify files, compute relevance/novelty/actuality scores,
+  decide what to do with each file, and maintain ingestion/ingestion-index.yaml.
+  Optionally create cleaned/summary versions of marketing docs.
+
+inputs:
+  - path: "./"   # читати весь репозиторій, крім технічних директорій
+
+outputs:
+  - path: "ingestion/ingestion-index.yaml"
+  - path: "ingestion/logs/"
+  - path: "**/*.clean.md"
+  - path: "**/*.summary.md"
+
+capabilities:
+  - file_read
+  - file_write_limited
+  - semantic_classification
+  - similarity_search
+  - summarisation
+
+guardrails:
+  deny_write:
+    - "docs/"
+    - "concepts/"
+    - "domains/"
+    - "schemas/"
+    - "templates/"
+    - "agents/"
+    - "infra/"
+    - "progress/"
+    - "monitoring/"
+    - ".git/"
+    - "node_modules/"
+    - "dist/"
+    - "build/"
+  allow_write:
+    - "ingestion/ingestion-index.yaml"
+    - "ingestion/logs/"
+    - "**/*.clean.md"
+    - "**/*.summary.md"
+
+config:
+  index_file: "ingestion/ingestion-index.yaml"
+  log_dir: "ingestion/logs/"
+  marketing_cleaning_spec: "ingestion/transforms/marketing-cleaning.md"
+  code_classification_spec: "ingestion/transforms/code-classification.md"
+  artefact_index_file: "progress/artefacts/artefact-index.yaml"
+
+prompts:
+  system_prompt_file: "agents/patterns/repo-ingestion-agent/repo-ingestion.prompt.md"

@@ -1,0 +1,3 @@
+# Moderation Policy
+
+Політика модерації.
