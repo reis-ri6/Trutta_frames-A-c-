@@ -211,6 +211,23 @@ artefacts:
     supersedes: []
     notes: "Vendor and service network model covering entities, integration levels, and ties to DSL, tokens, TJM, and ABC."
 
+  - id: "PD-014"
+    type: "pd"
+    path: "docs/pd/PD-014-programs-subsidies-funding-flows.md"
+    title: "Trutta Programs, Subsidies & Funding Flows"
+    scope: "programs"
+    domains: ["services", "hospitality", "food", "city", "tourism", "health"]
+    concepts: ["abc", "tjm", "trutta-tokenization"]
+    status: "draft"
+    owner: "product"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "manual"
+    tags: ["spec", "programs", "funding", "subsidy"]
+    depends_on: ["PD-001", "PD-002", "PD-003", "PD-004", "PD-005", "PD-006", "PD-007", "PD-008", "PD-009", "PD-010", "PD-011", "PD-012", "PD-013"]
+    supersedes: []
+    notes: "Framework for programs, subsidies, funding pools, and policy-driven tokenized entitlements tied to DSL, ABC, TJM, and vendor networks."
+
   - id: "VG-500"
     type: "vg"
     path: "docs/vg/VG-500-vendor-onboarding.md"
