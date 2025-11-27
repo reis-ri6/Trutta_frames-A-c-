@@ -6,10 +6,10 @@ updated_at: "2025-11-25T00:00:00Z"
 # docs-status.yaml         = "в якому стані цей артефакт і що з ним робити"
 
 summary:
-  total: 24
+  total: 25
   by_status:
     missing: 0        # немає файла, тільки запис в індексі
-    draft: 24
+    draft: 25
     in_review: 0
     canonical: 0
     deprecated: 0
@@ -225,6 +225,16 @@ items:
     last_agent_update: null
     last_agent_id: null
     notes: "Canonical menu and menu item model with sections, availability, options, and bindings to dishes, DSL products, tokens, TJM/ABC contexts, and programs; needs schema alignment and ingestion/quality tooling."
+
+  # === DOMAIN-FD-005 ===
+  - id: "DOMAIN-FD-005"
+    path: "domains/food/DOMAIN-FD-005-allergens-diet-tags-and-health-constraints-binding.md"
+    type: "domain"
+    status: "draft"
+    readiness_score: 0.2
+    last_agent_update: null
+    last_agent_id: null
+    notes: "Binding model for allergens, diet tags, and health constraint references across ingredients, dishes, variants, and menu items; needs schema alignment, HL references, and tagging/validation workflows."
 
   # === VG-500 ===
   - id: "VG-500"
