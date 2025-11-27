@@ -330,6 +330,23 @@ artefacts:
     supersedes: []
     notes: "Canonical model for ingredients, nutrient definitions/profiles, aggregation rules, and reference mappings for food domain ingestion and analytics."
 
+  - id: "DOMAIN-FD-003"
+    type: "domain"
+    path: "domains/food/DOMAIN-FD-003-dishes-recipes-and-aggregation-rules.md"
+    title: "Dishes, Recipes & Aggregation Rules"
+    scope: "food-domain"
+    domains: ["food", "health", "services", "hospitality", "city"]
+    concepts: ["trutta-tokenization", "tjm", "abc"]
+    status: "draft"
+    owner: "data"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "manual"
+    tags: ["domain", "food", "recipes", "dsl", "nutrition"]
+    depends_on: ["DOMAIN-FD-001", "DOMAIN-FD-002", "PD-001", "PD-004", "PD-005", "PD-006", "PD-011", "PD-014", "PD-016", "PD-017"]
+    supersedes: []
+    notes: "Canonical model for dishes, recipes, variants, and aggregation rules linking ingredients to DSL products, tokens, menus, and analytics."
+
   - id: "VG-500"
     type: "vg"
     path: "docs/vg/VG-500-vendor-onboarding.md"

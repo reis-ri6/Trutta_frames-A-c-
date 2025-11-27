@@ -6,10 +6,10 @@ updated_at: "2025-11-25T00:00:00Z"
 # docs-status.yaml         = "в якому стані цей артефакт і що з ним робити"
 
 summary:
-  total: 22
+  total: 23
   by_status:
     missing: 0        # немає файла, тільки запис в індексі
-    draft: 22
+    draft: 23
     in_review: 0
     canonical: 0
     deprecated: 0
@@ -205,6 +205,16 @@ items:
     last_agent_update: null
     last_agent_id: null
     notes: "Canonical ingredient and nutrient profile model with definitions, aggregation rules, and reference mappings; needs DB schemas, unit conversions, and ingestion jobs implemented."
+
+  # === DOMAIN-FD-003 ===
+  - id: "DOMAIN-FD-003"
+    path: "domains/food/DOMAIN-FD-003-dishes-recipes-and-aggregation-rules.md"
+    type: "domain"
+    status: "draft"
+    readiness_score: 0.2
+    last_agent_update: null
+    last_agent_id: null
+    notes: "Canonical dish/recipe model with variants, dish groups, and nutrient aggregation rules linking ingredients to DSL products, tokens, and menu bindings; needs schema alignment and validation tooling."
 
   # === VG-500 ===
   - id: "VG-500"
