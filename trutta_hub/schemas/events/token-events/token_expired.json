@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "TokenExpired",
+  "type": "object",
+  "properties": {
+    "event_id": { "type": "string", "format": "uuid" },
+    "token_id": { "type": "string" },
+    "expired_at": { "type": "string", "format": "date-time" },
+    "source": { "type": "string" }
+  },
+  "required": ["event_id", "token_id", "expired_at"]
+}

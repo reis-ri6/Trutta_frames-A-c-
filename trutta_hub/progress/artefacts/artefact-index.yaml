@@ -1,0 +1,384 @@
+version: 1
+updated_at: "2025-11-25T00:00:00Z"
+
+# Головний індекс canonical-артефактів Trutta Hub.
+# Один запис = один PD/VG/CONCEPT/DOMAIN/TEMPLATE/інший ключовий док.
+
+artefacts:
+  # === ПРИКЛАДИ (можна залишити як стартовий seed, далі дописуватиме агент) ===
+
+  - id: "PD-001"
+    type: "pd"    # pd | vg | concept | domain | template | policy | other
+    path: "docs/pd/PD-001-product-dsl-blueprint.md"
+    title: "Product DSL Blueprint"
+    scope: "trutta-core"      # ядро/модуль/продукт
+    domains: ["tourism", "services", "food"]
+    concepts: ["tjm", "trutta-tokenization"]
+    status: "draft"           # draft | in_review | canonical | deprecated | conflict
+    owner: "arch"             # arch | product | data | ops | legal | ai-ops | other
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "manual"          # manual | migrated | ingestion
+    tags: ["spec", "core"]
+    depends_on: []            # список id інших артефактів
+    supersedes: []            # які id цей артефакт замінює/знімає з канону
+    notes: "Initial seed of PD-001 from legacy docs."
+
+  - id: "PD-003"
+    type: "pd"
+    path: "docs/pd/PD-003-dsl-file-types-and-schemas.md"
+    title: "Trutta DSL File Types & Schemas"
+    scope: "trutta-core"
+    domains: ["tourism", "hospitality", "services", "food", "health"]
+    concepts: ["tjm", "abc", "trutta-tokenization"]
+    status: "draft"
+    owner: "arch"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "manual"
+    tags: ["spec", "dsl", "schema-contract"]
+    depends_on: ["PD-001", "PD-002"]
+    supersedes: []
+    notes: "Defines DSL artefact types, directory conventions, and minimal fields."
+
+  - id: "PD-004"
+    type: "pd"
+    path: "docs/pd/PD-004-industrial-data-and-knowledge-layers.md"
+    title: "Industrial Data & Knowledge Layers"
+    scope: "trutta-core"
+    domains: ["tourism", "hospitality", "services", "food", "health", "city"]
+    concepts: ["tjm", "abc", "trutta-tokenization"]
+    status: "draft"
+    owner: "data"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "manual"
+    tags: ["spec", "data-layer", "knowledge"]
+    depends_on: ["PD-001", "PD-002", "PD-003"]
+    supersedes: []
+    notes: "Defines raw/reference/canonical/analytics/AI layers and registries across industrial domains."
+
+  - id: "PD-005"
+    type: "pd"
+    path: "docs/pd/PD-005-token-types-and-lifecycle.md"
+    title: "Trutta Token Types & Lifecycle"
+    scope: "trutta-core"
+    domains: ["tourism", "hospitality", "services", "food", "health", "city"]
+    concepts: ["tjm", "abc", "trutta-tokenization"]
+    status: "draft"
+    owner: "arch"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "manual"
+    tags: ["spec", "token", "lifecycle"]
+    depends_on: ["PD-001", "PD-002", "PD-003", "PD-004"]
+    supersedes: []
+    notes: "Defines token archetypes, lifecycle, constraints, and guardrails for Trutta entitlements."
+
+  - id: "PD-006"
+    type: "pd"
+    path: "docs/pd/PD-006-tjm-travel-journey-model.md"
+    title: "TJM (Travel Journey Model) — Core Framework for Trutta"
+    scope: "trutta-core"
+    domains: ["tourism", "city", "services", "hospitality"]
+    concepts: ["tjm", "abc", "trutta-tokenization"]
+    status: "draft"
+    owner: "arch"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "manual"
+    tags: ["spec", "journey", "framework"]
+    depends_on: ["PD-001", "PD-002", "PD-003", "PD-004", "PD-005"]
+    supersedes: []
+    notes: "Canonical travel journey model linking DSL, tokens, domains, and analytics across stages/steps."
+
+  - id: "PD-007"
+    type: "pd"
+    path: "docs/pd/PD-007-abc-core-framework.md"
+    title: "ABC (Anonymous Buyers Community) — Core Framework for Trutta"
+    scope: "trutta-core"
+    domains: ["tourism", "services", "hospitality", "food", "health", "city"]
+    concepts: ["abc", "tjm", "trutta-tokenization"]
+    status: "draft"
+    owner: "product"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "manual"
+    tags: ["spec", "abc", "demand"]
+    depends_on: ["PD-001", "PD-002", "PD-003", "PD-004", "PD-005", "PD-006"]
+    supersedes: []
+    notes: "Demand-side framework covering avatars, segments, demand pools, group tokens, and privacy/fraud guardrails."
+
+  - id: "PD-008"
+    type: "pd"
+    path: "docs/pd/PD-008-agent-and-automation-layer.md"
+    title: "Trutta Agent & Automation Layer"
+    scope: "trutta-core"
+    domains: ["tourism", "hospitality", "services", "food", "health", "city"]
+    concepts: ["tjm", "abc", "trutta-tokenization"]
+    status: "draft"
+    owner: "arch"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "manual"
+    tags: ["spec", "agents", "automation"]
+    depends_on: ["PD-001", "PD-002", "PD-003", "PD-004", "PD-005", "PD-006", "PD-007"]
+    supersedes: []
+    notes: "Agent and automation layer framing roles, contracts, pipelines, and guardrails for Codex/LLM workflows."
+
+  - id: "PD-009"
+    type: "pd"
+    path: "docs/pd/PD-009-city-and-project-instantiation-model.md"
+    title: "Trutta City & Project Instantiation Model"
+    scope: "trutta-core"
+    domains: ["tourism", "hospitality", "services", "food", "health", "city"]
+    concepts: ["tjm", "abc", "trutta-tokenization"]
+    status: "draft"
+    owner: "arch"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "manual"
+    tags: ["spec", "city", "project", "instantiation"]
+    depends_on: ["PD-001", "PD-002", "PD-003", "PD-004", "PD-005", "PD-006", "PD-007", "PD-008"]
+    supersedes: []
+    notes: "Defines hub → city → project layering, inheritance rules, and repo patterns for Trutta instances."
+
+  - id: "PD-010"
+    type: "pd"
+    path: "docs/pd/PD-010-trutta-repo-and-docs-conventions.md"
+    title: "Trutta Repositories & Documentation Conventions"
+    scope: "trutta-core"
+    domains: ["tourism", "hospitality", "services", "food", "health", "city"]
+    concepts: ["tjm", "abc", "trutta-tokenization"]
+    status: "draft"
+    owner: "arch"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "manual"
+    tags: ["spec", "conventions", "docs", "repo"]
+    depends_on: ["PD-001", "PD-002", "PD-003", "PD-004", "PD-005", "PD-006", "PD-007", "PD-008", "PD-009"]
+    supersedes: []
+    notes: "Repo/documentation conventions covering repo types, directory/file naming, artefact indices, and agent usage guidance."
+
+  - id: "PD-011"
+    type: "pd"
+    path: "docs/pd/PD-011-security-privacy-governance-baseline.md"
+    title: "Trutta Security, Privacy & Data Governance Baseline"
+    scope: "trutta-core"
+    domains: ["tourism", "hospitality", "services", "food", "health", "city"]
+    concepts: ["tjm", "abc", "trutta-tokenization"]
+    status: "draft"
+    owner: "security"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "manual"
+    tags: ["spec", "security", "privacy", "governance"]
+    depends_on: ["PD-001", "PD-002", "PD-003", "PD-004", "PD-005", "PD-006", "PD-007", "PD-008", "PD-009", "PD-010"]
+    supersedes: []
+    notes: "Baseline security/privacy/data-governance principles including data classes, access controls, logging, and agent guardrails."
+
+  - id: "PD-012"
+    type: "pd"
+    path: "docs/pd/PD-012-trutta-runtime-service-architecture.md"
+    title: "Trutta Runtime & Service Architecture (High-level)"
+    scope: "trutta-core"
+    domains: ["tourism", "hospitality", "services", "food", "health", "city"]
+    concepts: ["tjm", "abc", "trutta-tokenization"]
+    status: "draft"
+    owner: "arch"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "manual"
+    tags: ["spec", "runtime", "architecture"]
+    depends_on: ["PD-001", "PD-002", "PD-003", "PD-004", "PD-005", "PD-006", "PD-007", "PD-008", "PD-009", "PD-010", "PD-011"]
+    supersedes: []
+    notes: "High-level runtime architecture across bounded contexts, planes, events, and multi-tenant layering aligned to PD-001–011."
+
+  - id: "PD-013"
+    type: "pd"
+    path: "docs/pd/PD-013-vendor-service-network-model.md"
+    title: "Trutta Vendor & Service Network Model"
+    scope: "vendor-network"
+    domains: ["services", "hospitality", "food", "city", "tourism", "health"]
+    concepts: ["abc", "tjm", "trutta-tokenization"]
+    status: "draft"
+    owner: "product"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "manual"
+    tags: ["spec", "vendor", "network"]
+    depends_on: ["PD-001", "PD-002", "PD-003", "PD-004", "PD-005", "PD-006", "PD-007", "PD-008", "PD-009", "PD-010", "PD-011", "PD-012"]
+    supersedes: []
+    notes: "Vendor and service network model covering entities, integration levels, and ties to DSL, tokens, TJM, and ABC."
+
+  - id: "PD-014"
+    type: "pd"
+    path: "docs/pd/PD-014-programs-subsidies-funding-flows.md"
+    title: "Trutta Programs, Subsidies & Funding Flows"
+    scope: "programs"
+    domains: ["services", "hospitality", "food", "city", "tourism", "health"]
+    concepts: ["abc", "tjm", "trutta-tokenization"]
+    status: "draft"
+    owner: "product"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "manual"
+    tags: ["spec", "programs", "funding", "subsidy"]
+    depends_on: ["PD-001", "PD-002", "PD-003", "PD-004", "PD-005", "PD-006", "PD-007", "PD-008", "PD-009", "PD-010", "PD-011", "PD-012", "PD-013"]
+    supersedes: []
+    notes: "Framework for programs, subsidies, funding pools, and policy-driven tokenized entitlements tied to DSL, ABC, TJM, and vendor networks."
+
+  - id: "PD-016"
+    type: "pd"
+    path: "docs/pd/PD-016-trutta-analytics-events-and-measurement-model.md"
+    title: "Trutta Analytics, Events & Measurement Model"
+    scope: "analytics"
+    domains: ["tourism", "hospitality", "services", "food", "health", "city"]
+    concepts: ["tjm", "abc", "trutta-tokenization"]
+    status: "draft"
+    owner: "data"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "manual"
+    tags: ["spec", "analytics", "events", "measurement"]
+    depends_on: ["PD-001", "PD-002", "PD-003", "PD-004", "PD-005", "PD-006", "PD-007", "PD-008", "PD-009", "PD-010", "PD-011", "PD-012", "PD-013", "PD-014"]
+    supersedes: []
+    notes: "Canonical analytics and events model aligning DSL, TJM, ABC, vendor, and program contexts with metrics and tracking conventions."
+
+  - id: "PD-017"
+    type: "pd"
+    path: "docs/pd/PD-017-trutta-data-platform-and-knowledge-graph-blueprint.md"
+    title: "Trutta Data Platform & Knowledge Graph Blueprint"
+    scope: "data-platform"
+    domains: ["tourism", "hospitality", "services", "food", "health", "city"]
+    concepts: ["tjm", "abc", "trutta-tokenization"]
+    status: "draft"
+    owner: "data"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "manual"
+    tags: ["spec", "data-platform", "knowledge-graph"]
+    depends_on: ["PD-001", "PD-002", "PD-003", "PD-004", "PD-005", "PD-006", "PD-007", "PD-008", "PD-009", "PD-010", "PD-011", "PD-012", "PD-013", "PD-014", "PD-016"]
+    supersedes: []
+    notes: "Blueprint for data planes, canonical stores, knowledge graph, and vector layers connecting DSL, TJM, ABC, tokens, vendor network, and programs."
+
+  - id: "PD-018"
+    type: "pd"
+    path: "docs/pd/PD-018-trutta-integrations-and-external-ecosystem-model.md"
+    title: "Trutta Integrations & External Ecosystem Model"
+    scope: "integrations"
+    domains: ["tourism", "hospitality", "services", "food", "health", "city"]
+    concepts: ["tjm", "abc", "trutta-tokenization"]
+    status: "draft"
+    owner: "arch"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "manual"
+    tags: ["spec", "integrations", "external-ecosystem"]
+    depends_on: ["PD-001", "PD-002", "PD-003", "PD-004", "PD-005", "PD-006", "PD-007", "PD-008", "PD-009", "PD-010", "PD-011", "PD-012", "PD-013", "PD-014", "PD-016", "PD-017"]
+    supersedes: []
+    notes: "Canonical integration model covering planes (maps, supply, vendor backend, payments, identity, messaging, health, blockchain, AI) with contracts and guardrails across DSL, tokens, data platform, TJM/ABC, vendor network, and programs."
+
+  - id: "PD-019"
+    type: "pd"
+    path: "docs/pd/PD-019-trutta-environments-deployment-and-devops-blueprint.md"
+    title: "Trutta Environments, Deployment & DevOps Blueprint"
+    scope: "devops"
+    domains: ["tourism", "hospitality", "services", "food", "health", "city"]
+    concepts: ["tjm", "abc", "trutta-tokenization"]
+    status: "draft"
+    owner: "arch"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "manual"
+    tags: ["spec", "devops", "environments", "deployment"]
+    depends_on: ["PD-001", "PD-002", "PD-003", "PD-004", "PD-005", "PD-006", "PD-007", "PD-008", "PD-009", "PD-010", "PD-011", "PD-012", "PD-016", "PD-017", "PD-018"]
+    supersedes: []
+    notes: "Blueprint for environments, deployment, and DevOps patterns across hub/city/project layers covering CI/CD, rollout, observability, migrations, and security guardrails."
+
+  - id: "DOMAIN-FD-001"
+    type: "domain"
+    path: "domains/food/DOMAIN-FD-001-food-and-menu-domain-overview.md"
+    title: "Food, Dishes & Menus Domain Overview"
+    scope: "food-domain"
+    domains: ["food", "health", "services", "hospitality", "city"]
+    concepts: ["tjm", "abc", "trutta-tokenization"]
+    status: "draft"
+    owner: "data"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "manual"
+    tags: ["domain", "food", "menus", "nutrition"]
+    depends_on: ["PD-001", "PD-002", "PD-004", "PD-005", "PD-006", "PD-007", "PD-011", "PD-014", "PD-016", "PD-017", "PD-018"]
+    supersedes: []
+    notes: "Canonical food domain overview covering dishes, ingredients, menus, diet tags, and bindings to DSL, tokens, TJM/ABC, programs, and city/vendor layers."
+
+  - id: "DOMAIN-FD-002"
+    type: "domain"
+    path: "domains/food/DOMAIN-FD-002-ingredients-and-nutrient-profiles.md"
+    title: "Ingredients & Nutrient Profiles"
+    scope: "food-domain"
+    domains: ["food", "health", "services", "hospitality", "city"]
+    concepts: ["trutta-tokenization"]
+    status: "draft"
+    owner: "data"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "manual"
+    tags: ["domain", "food", "nutrition", "ingredients"]
+    depends_on: ["DOMAIN-FD-001", "PD-001", "PD-004", "PD-005", "PD-011", "PD-014", "PD-016", "PD-017", "PD-018"]
+    supersedes: []
+    notes: "Canonical model for ingredients, nutrient definitions/profiles, aggregation rules, and reference mappings for food domain ingestion and analytics."
+
+  - id: "VG-500"
+    type: "vg"
+    path: "docs/vg/VG-500-vendor-onboarding.md"
+    title: "Vendor Onboarding — Trutta/Sospeso"
+    scope: "vendor-network"
+    domains: ["services", "hospitality"]
+    concepts: ["abc", "trutta-tokenization"]
+    status: "draft"
+    owner: "ops"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "migrated"        # наприклад: міграція з Trutta_frames-A-c-
+    tags: ["runbook", "onboarding"]
+    depends_on: ["PD-001"]
+    supersedes: []
+    notes: "Migrated from legacy VG-500, requires review."
+
+  - id: "CONCEPT-TJM"
+    type: "concept"
+    path: "concepts/tjm-travel-journey-map/00-overview.md"
+    title: "TJM — Travel Journey Map"
+    scope: "tjm"
+    domains: ["tourism"]
+    concepts: []
+    status: "draft"
+    owner: "product"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "migrated"
+    tags: ["concept"]
+    depends_on: []
+    supersedes: []
+    notes: "Core model for travel journeys."
+
+  - id: "TEMPLATE-SOSPESO"
+    type: "template"
+    path: "templates/projects/sospeso/template.manifest.yaml"
+    title: "Sospeso Project Template"
+    scope: "sospeso"
+    domains: ["services", "food"]
+    concepts: ["abc", "trutta-tokenization"]
+    status: "draft"
+    owner: "arch"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "manual"
+    tags: ["template", "project"]
+    depends_on: ["PD-001", "VG-500"]
+    supersedes: []
+    notes: "Base scaffold for Sospeso rollouts."
+
+  # Далі repo-ingestion-agent + doc-canonisation-agent додають нові записи або оновлюють існуючі.
