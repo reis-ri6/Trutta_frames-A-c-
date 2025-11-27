@@ -347,6 +347,40 @@ artefacts:
     supersedes: []
     notes: "Canonical model for dishes, recipes, variants, and aggregation rules linking ingredients to DSL products, tokens, menus, and analytics."
 
+  - id: "DOMAIN-FD-004"
+    type: "domain"
+    path: "domains/food/DOMAIN-FD-004-menus-and-menu-items-model.md"
+    title: "Menus & Menu Items Model"
+    scope: "food-domain"
+    domains: ["food", "health", "services", "hospitality", "city"]
+    concepts: ["trutta-tokenization", "tjm", "abc"]
+    status: "draft"
+    owner: "product"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "manual"
+    tags: ["domain", "food", "menus", "dsl", "tokens"]
+    depends_on: ["DOMAIN-FD-001", "DOMAIN-FD-002", "DOMAIN-FD-003", "PD-001", "PD-004", "PD-005", "PD-006", "PD-007", "PD-011", "PD-013", "PD-014", "PD-015", "PD-016", "PD-017"]
+    supersedes: []
+    notes: "Canonical menu model covering menus, items, options, availability, and bindings to dishes, DSL products, tokens, TJM/ABC contexts, vendor programs, and analytics."
+
+  - id: "DOMAIN-FD-005"
+    type: "domain"
+    path: "domains/food/DOMAIN-FD-005-allergens-diet-tags-and-health-constraints-binding.md"
+    title: "Allergens, Diet Tags & Health Constraints Binding"
+    scope: "food-domain"
+    domains: ["food", "health", "services", "hospitality", "city"]
+    concepts: ["trutta-tokenization", "tjm", "abc"]
+    status: "draft"
+    owner: "product"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "manual"
+    tags: ["domain", "food", "health", "allergens", "diet-tags"]
+    depends_on: ["DOMAIN-FD-001", "DOMAIN-FD-002", "DOMAIN-FD-003", "DOMAIN-FD-004", "PD-001", "PD-004", "PD-005", "PD-006", "PD-007", "PD-011", "PD-014", "PD-016", "PD-017"]
+    supersedes: []
+    notes: "Binding model for allergens, diet tags, and health constraint references across ingredients, dishes, variants, and menu items with links to DOMAIN-HL, DSL products, tokens, and program usage."
+
   - id: "VG-500"
     type: "vg"
     path: "docs/vg/VG-500-vendor-onboarding.md"
