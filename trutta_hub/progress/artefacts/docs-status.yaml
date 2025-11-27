@@ -6,10 +6,10 @@ updated_at: "2025-11-25T00:00:00Z"
 # docs-status.yaml         = "в якому стані цей артефакт і що з ним робити"
 
 summary:
-  total: 21
+  total: 22
   by_status:
     missing: 0        # немає файла, тільки запис в індексі
-    draft: 21
+    draft: 22
     in_review: 0
     canonical: 0
     deprecated: 0
@@ -195,6 +195,16 @@ items:
     last_agent_update: null
     last_agent_id: null
     notes: "Canonical food domain overview covering dishes, ingredients, menus, nutrient profiles, diet tags, and bindings to DSL/tokens/TJM/ABC/programs; needs schema alignment and ingestion/analytics specs."
+
+  # === DOMAIN-FD-002 ===
+  - id: "DOMAIN-FD-002"
+    path: "domains/food/DOMAIN-FD-002-ingredients-and-nutrient-profiles.md"
+    type: "domain"
+    status: "draft"
+    readiness_score: 0.2
+    last_agent_update: null
+    last_agent_id: null
+    notes: "Canonical ingredient and nutrient profile model with definitions, aggregation rules, and reference mappings; needs DB schemas, unit conversions, and ingestion jobs implemented."
 
   # === VG-500 ===
   - id: "VG-500"

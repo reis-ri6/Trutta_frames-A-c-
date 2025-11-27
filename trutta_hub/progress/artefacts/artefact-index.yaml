@@ -313,6 +313,23 @@ artefacts:
     supersedes: []
     notes: "Canonical food domain overview covering dishes, ingredients, menus, diet tags, and bindings to DSL, tokens, TJM/ABC, programs, and city/vendor layers."
 
+  - id: "DOMAIN-FD-002"
+    type: "domain"
+    path: "domains/food/DOMAIN-FD-002-ingredients-and-nutrient-profiles.md"
+    title: "Ingredients & Nutrient Profiles"
+    scope: "food-domain"
+    domains: ["food", "health", "services", "hospitality", "city"]
+    concepts: ["trutta-tokenization"]
+    status: "draft"
+    owner: "data"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "manual"
+    tags: ["domain", "food", "nutrition", "ingredients"]
+    depends_on: ["DOMAIN-FD-001", "PD-001", "PD-004", "PD-005", "PD-011", "PD-014", "PD-016", "PD-017", "PD-018"]
+    supersedes: []
+    notes: "Canonical model for ingredients, nutrient definitions/profiles, aggregation rules, and reference mappings for food domain ingestion and analytics."
+
   - id: "VG-500"
     type: "vg"
     path: "docs/vg/VG-500-vendor-onboarding.md"
