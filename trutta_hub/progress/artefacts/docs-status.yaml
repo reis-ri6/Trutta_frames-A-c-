@@ -6,10 +6,10 @@ updated_at: "2025-11-25T00:00:00Z"
 # docs-status.yaml         = "в якому стані цей артефакт і що з ним робити"
 
 summary:
-  total: 18
+  total: 19
   by_status:
     missing: 0        # немає файла, тільки запис в індексі
-    draft: 18
+    draft: 19
     in_review: 0
     canonical: 0
     deprecated: 0
@@ -165,6 +165,16 @@ items:
     last_agent_update: null
     last_agent_id: null
     notes: "Data platform and knowledge graph blueprint covering data planes, canonical stores, vector/graph layers, and agent access patterns; needs concrete tech stacks, schemas, and ETL specs."
+
+  # === PD-018 ===
+  - id: "PD-018"
+    path: "docs/pd/PD-018-trutta-integrations-and-external-ecosystem-model.md"
+    type: "pd"
+    status: "draft"
+    readiness_score: 0.25
+    last_agent_update: null
+    last_agent_id: null
+    notes: "Integration and external ecosystem model covering planes (maps, supply, vendor backend, payments, identity, messaging, health, blockchain, AI) with contracts, data/security guardrails, and repo patterns; needs provider-specific guides and API contracts (VG-15xx)."
 
   # === VG-500 ===
   - id: "VG-500"
