@@ -1,0 +1,7 @@
+version: 1
+updated_at: "2025-11-24T00:00:00Z"
+
+# Ingestion index:
+# one entry per file seen by the ingestion agent.
+
+files: []
