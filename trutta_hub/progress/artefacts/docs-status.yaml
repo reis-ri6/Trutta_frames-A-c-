@@ -6,10 +6,10 @@ updated_at: "2025-11-25T00:00:00Z"
 # docs-status.yaml         = "в якому стані цей артефакт і що з ним робити"
 
 summary:
-  total: 19
+  total: 20
   by_status:
     missing: 0        # немає файла, тільки запис в індексі
-    draft: 19
+    draft: 20
     in_review: 0
     canonical: 0
     deprecated: 0
@@ -175,6 +175,16 @@ items:
     last_agent_update: null
     last_agent_id: null
     notes: "Integration and external ecosystem model covering planes (maps, supply, vendor backend, payments, identity, messaging, health, blockchain, AI) with contracts, data/security guardrails, and repo patterns; needs provider-specific guides and API contracts (VG-15xx)."
+
+  # === PD-019 ===
+  - id: "PD-019"
+    path: "docs/pd/PD-019-trutta-environments-deployment-and-devops-blueprint.md"
+    type: "pd"
+    status: "draft"
+    readiness_score: 0.25
+    last_agent_update: null
+    last_agent_id: null
+    notes: "Environment/deployment/DevOps blueprint covering hub/city/project layers, CI/CD, rollout, observability, migrations, and security guardrails; needs concrete platform configs, runbooks, and SLO baselines."
 
   # === VG-500 ===
   - id: "VG-500"
