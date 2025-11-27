@@ -296,6 +296,23 @@ artefacts:
     supersedes: []
     notes: "Blueprint for environments, deployment, and DevOps patterns across hub/city/project layers covering CI/CD, rollout, observability, migrations, and security guardrails."
 
+  - id: "DOMAIN-FD-001"
+    type: "domain"
+    path: "domains/food/DOMAIN-FD-001-food-and-menu-domain-overview.md"
+    title: "Food, Dishes & Menus Domain Overview"
+    scope: "food-domain"
+    domains: ["food", "health", "services", "hospitality", "city"]
+    concepts: ["tjm", "abc", "trutta-tokenization"]
+    status: "draft"
+    owner: "data"
+    created_at: "2025-11-25T00:00:00Z"
+    updated_at: "2025-11-25T00:00:00Z"
+    source: "manual"
+    tags: ["domain", "food", "menus", "nutrition"]
+    depends_on: ["PD-001", "PD-002", "PD-004", "PD-005", "PD-006", "PD-007", "PD-011", "PD-014", "PD-016", "PD-017", "PD-018"]
+    supersedes: []
+    notes: "Canonical food domain overview covering dishes, ingredients, menus, diet tags, and bindings to DSL, tokens, TJM/ABC, programs, and city/vendor layers."
+
   - id: "VG-500"
     type: "vg"
     path: "docs/vg/VG-500-vendor-onboarding.md"

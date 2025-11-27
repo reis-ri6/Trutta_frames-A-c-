@@ -6,10 +6,10 @@ updated_at: "2025-11-25T00:00:00Z"
 # docs-status.yaml         = "в якому стані цей артефакт і що з ним робити"
 
 summary:
-  total: 20
+  total: 21
   by_status:
     missing: 0        # немає файла, тільки запис в індексі
-    draft: 20
+    draft: 21
     in_review: 0
     canonical: 0
     deprecated: 0
@@ -185,6 +185,16 @@ items:
     last_agent_update: null
     last_agent_id: null
     notes: "Environment/deployment/DevOps blueprint covering hub/city/project layers, CI/CD, rollout, observability, migrations, and security guardrails; needs concrete platform configs, runbooks, and SLO baselines."
+
+  # === DOMAIN-FD-001 ===
+  - id: "DOMAIN-FD-001"
+    path: "domains/food/DOMAIN-FD-001-food-and-menu-domain-overview.md"
+    type: "domain"
+    status: "draft"
+    readiness_score: 0.2
+    last_agent_update: null
+    last_agent_id: null
+    notes: "Canonical food domain overview covering dishes, ingredients, menus, nutrient profiles, diet tags, and bindings to DSL/tokens/TJM/ABC/programs; needs schema alignment and ingestion/analytics specs."
 
   # === VG-500 ===
   - id: "VG-500"
